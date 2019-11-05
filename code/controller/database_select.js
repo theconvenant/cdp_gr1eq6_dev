@@ -1,12 +1,14 @@
-const database = require('database_header').database
+const database = require('./database_header')
 
-database.connect()
+database.getDatabase().connect()
 
-function getname(){
-    connection.query('SELECT * FROM users ;', function (err, results, fields) {
+exports.findUserByName = function (userName) {
+    database.getDatabase().query('SELECT * FROM users WHERE name = \'' + userName + '\';', function (err, results) {
         if (err) throw err
         console.log('The solution is: ', results)
     })
 }
 
-database.end()
+this.findUserByName('jane')
+
+database.getDatabase().end()

@@ -15,11 +15,6 @@ app.get('/', function (req, res) {
     res.render('index')
 })
 
-app.post('/workshop', function (req, res) {
-    console.log('go to project')
-    res.render('projects')
-})
-
 // Page de connection
 
 app.listen(8080, function () {
