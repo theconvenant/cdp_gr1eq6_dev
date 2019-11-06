@@ -1,14 +1,17 @@
 const database = require('./database_header')
 
-database.getDatabase().connect()
-
-exports.findUserByName = function (userName) {
-    database.getDatabase().query('SELECT * FROM users WHERE name = \'' + userName + '\';', function (err, results) {
-        if (err) throw err
-        console.log('The solution is: ', results)
+exports.findUserByName = function (userName, callback) {
+    process.nextTick(function () {
+        database.getDatabase().query('SELECT * FROM users WHERE username = \'' + userName + '\';', function (err, results) {
+            if (err) throw err
+            const res = results[0]
+            callback(null, res)
+        })
     })
 }
 
-this.findUserByName('jane')
+exports.findProjectByUsername = function (userName) {
+    database.getDatabase().query('', function (results) {
 
-database.getDatabase().end()
+    })
+}

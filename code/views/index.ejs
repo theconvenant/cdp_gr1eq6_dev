@@ -17,14 +17,14 @@
           <p class="message">Already registered? <a href="#">Sign In</a></p>
         </form>
         
-        <form class="w3-container login-form">
-            <label>First Name</label>
-            <input class="w3-input w3-border w3-round" type="text">
+        <form class="w3-container login-form" action="/" method="POST">
+            <label>Username</label>
+            <input class="w3-input w3-border w3-round" type="text" name="username">
                 
-            <label>Last Name</label>
-            <input class="w3-input w3-border w3-round" type="text">
+            <label>Password</label>
+            <input class="w3-input w3-border w3-round" type="password" name="password">
 
-            <input class="w3-btn w3-margin-top w3-ripple" type="button" value="Log in">
+            <input class="w3-btn w3-margin-top w3-ripple" type="submit" value="Log in">
             <p class="message">Not registered? <a href="#">Create an account</a></p>
         </form>
     </div>
