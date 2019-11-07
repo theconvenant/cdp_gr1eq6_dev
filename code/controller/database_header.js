@@ -8,5 +8,7 @@ const database = mysql.createConnection({
 })
 
 exports.getDatabase = function () {
-    return database
+    return new Promise((resolve) => {
+        resolve(database)
+    })
 }
