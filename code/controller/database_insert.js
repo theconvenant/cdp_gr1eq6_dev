@@ -24,18 +24,18 @@ exports.insertProject = function (projectName, ownerName, description) { // ----
         if (!projectName) reject(new Error('projectName is required'))
         if (!ownerName) reject(new Error('ownerName is required'))
         if (!description) {
-            var insertQuery = 'INSERT INTO projects VALUES ( \'' + projectName + '\', \'' + ownerName + '\', \'NULL\');'
+            var insertQuery = 'INSERT INTO projects (_project_name, _owner_name) VALUES ( \'' + projectName + '\', \'' + ownerName + '\');'
         } else {
             insertQuery = 'INSERT INTO projects VALUES ( \'' + projectName + '\', \'' + ownerName + '\', \'' + description + '\');'
-            database.getDatabase().then(
-                db => db.query(insertQuery, function (err, results) {
-                    if (err) {
-                        reject(err)
-                    }
-                    resolve(results)
-                })
-            )
         }
+        database.getDatabase().then(
+            db => db.query(insertQuery, function (err, results) {
+                if (err) {
+                    reject(err.sqlMessage)
+                }
+                resolve(results)
+            })
+        )
     })
 }
 
@@ -89,6 +89,7 @@ this.insertUser('jane', 'jane@jane.com', 'passJane').catch(e => console.log(e))
 this.insertUser('bob', 'bob@bob.com', 'passBob').catch(e => console.log(e))
 
 this.insertProject('project1', 'jane').catch(e => console.log(e))
+this.insertProject('project2', 'jane').catch(e => console.log(e))
 
 this.insertProjectUser('jane', 'project1').catch(e => console.log(e))
 
