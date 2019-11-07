@@ -24,3 +24,7 @@ this.passport.deserializeUser(function (username, callback) {
         }
     ).catch(err => callback(err))
 })
+
+exports.SignIn = function (email, username, password) {
+    return false
+}

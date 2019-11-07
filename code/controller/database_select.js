@@ -1,7 +1,5 @@
 const database = require('./database_header')
 
-database.getDatabase().then(db => db.connect())
-
 // All function return a list of RawDataPaquet with the requested values
 
 // return all infos of a user by it's user name
@@ -71,5 +69,3 @@ exports.findProjectByName = function (projectName) {
 this.findListProjectNameByOwnerName('jane').then(names => console.log(names))
 
 this.findProjectByName('project1').then(names => console.log(names))
-
-database.getDatabase().then(db => db.end())
