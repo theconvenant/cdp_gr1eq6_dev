@@ -18,16 +18,13 @@
             <th>Description</th>
             <th>Members</th>
         </tr>
+        <% for (var i = 0; i < projects.length; ++i) { %>
         <tr >
-            <td>Project1</td>
-            <td>Description</td>
-            <td>Nobody</td>
+            <td><%= projects[i]._project_name %></td>
+            <td><%= projects[i].description %></td>
+            <td><%= projects[i]._owner_name %></td>
         </tr>
-        <tr >
-            <td>Project2</td>
-            <td>Description</td>
-            <td>Nobody</td>
-        </tr>
+        <% }; %>
         </table>
     </div>
 </body>

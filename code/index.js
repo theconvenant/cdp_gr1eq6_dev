@@ -3,6 +3,7 @@ const bodyParser = require('body-parser')
 // const ejs = require('ejs')
 const path = require('path')
 const app = express()
+const databaseSelect = require('./controller/database_select')
 
 const authenticate = require('./models/authenticate')
 
@@ -71,7 +72,13 @@ app.post('/',
 app.get('/projects',
     require('connect-ensure-login').ensureLoggedIn(),
     function (req, res) {
-        res.render('projects', { user: req.user })
+        databaseSelect.findListProjectNameByOwnerName(req.user.username).then(function (result) {
+            console.log(result)
+            result = JSON.parse(JSON.stringify(result))
+            console.log(result)
+            console.log(result[0])
+            res.render('projects', { projects: result })
+        })
     })
 
 app.get('/logout',
