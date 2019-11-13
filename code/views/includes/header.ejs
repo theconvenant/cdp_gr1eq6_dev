@@ -3,16 +3,32 @@
 
 <link rel='stylesheet' href='css/w3.css'>
 
+<script type="text/javascript">
+        function changeOnglet (name) {
+                let new_onglet = 'onglet_' + name
+                if (new_onglet === curr_onglet){
+                        return
+                }
+                document.getElementById('onglet_' + name).className += ' w3-green'
+                var element = document.getElementById(curr_onglet).classList.remove('w3-green')
+                curr_onglet = new_onglet
+        }
+</script>
+
 <div class="w3-container w3-teal">
         <h1>Projet</h1>
         <p>here is the list of workshop</p>
 </div>
 
 <div class="w3-bar w3-dark-grey">
-        <a href="#" class="w3-bar-item w3-button w3-mobile w3-green" style="width:16.5%">Summary</a>
-        <a href="#" class="w3-bar-item w3-button w3-mobile" style="width:16.5%">Issues</a>
-        <a href="#" class="w3-bar-item w3-button w3-mobile" style="width:16.5%">Tasks</a>
-        <a href="#" class="w3-bar-item w3-button w3-mobile" style="width:16.5%">Tests</a>
-        <a href="#" class="w3-bar-item w3-button w3-mobile" style="width:16.5%">Sprints</a>
-        <a href="#" class="w3-bar-item w3-button w3-mobile" style="width:16.5%">Documentation</a>
-</div> 
+        <a href="#" class="w3-bar-item w3-button w3-mobile w3-green" id="onglet_summary" style="width:16.5%" onclick="changeOnglet('summary')">Summary</a>
+        <a href="#" class="w3-bar-item w3-button w3-mobile" id="onglet_issues" style="width:16.5%" onclick="changeOnglet('issues')">Issues</a>
+        <a href="#" class="w3-bar-item w3-button w3-mobile" id="onglet_tasks" style="width:16.5%" onclick="changeOnglet('tasks')">Tasks</a>
+        <a href="#" class="w3-bar-item w3-button w3-mobile" id="onglet_tests" style="width:16.5%" onclick="changeOnglet('tests')">Tests</a>
+        <a href="#" class="w3-bar-item w3-button w3-mobile" id="onglet_sprints" style="width:16.5%" onclick="changeOnglet('sprints')">Sprints</a>
+        <a href="#" class="w3-bar-item w3-button w3-mobile" id="onglet_documentation" style="width:16.5%" onclick="changeOnglet('documentation')">Documentation</a>
+</div>
+
+<script type="text/javascript">
+        var curr_onglet = 'onglet_summary';
+</script>

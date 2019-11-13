@@ -30,6 +30,18 @@ app.post('/register', function (req, res) {
     res.render('register')
 })
 
+app.get('/index', function (req, res) {
+    res.render('index')
+})
+
+app.post('/index', function (req, res) {
+    res.render('index')
+})
+
+app.get('/issues', function (req, res) {
+    res.render('issues')
+})
+
 app.post('/',
     authenticate.passport.authenticate('local', { failureRedirect: '/' }),
     function (req, res) {
