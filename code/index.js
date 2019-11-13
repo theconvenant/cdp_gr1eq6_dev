@@ -38,8 +38,28 @@ app.post('/index', function (req, res) {
     res.render('index')
 })
 
+app.get('/summary', function (req, res) {
+    res.render('summary')
+})
+
 app.get('/issues', function (req, res) {
     res.render('issues')
+})
+
+app.get('/tasks', function (req, res) {
+    res.render('tasks')
+})
+
+app.get('/tests', function (req, res) {
+    res.render('tests')
+})
+
+app.get('/sprints', function (req, res) {
+    res.render('sprints')
+})
+
+app.get('/documentation', function (req, res) {
+    res.render('documentation')
 })
 
 app.post('/',
