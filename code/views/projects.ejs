@@ -11,9 +11,6 @@
          <div class="w3-left-align w3-padding"><h2>SAF-SCRUM</h2></div>
          <div class="w3-display-topright"><a href="/logout" class="w3-button w3-teal w3-hover-green"><h2>logout</h2></a></div>
     </div>
-    <div class="w3-margin w3-center">
-        <input class="w3-btn w3-ripple w3-green" type="button" value="+ Add Project">
-    </div>
     <% if (projectsOwner.length != 0) { %>
     <div id="ProjectsOwn" class="w3-margin">
         <table class="w3-table-all w3-hoverable w3-card-4">
@@ -52,5 +49,29 @@
         </table>
     </div>
     <% }; %>
+    <div class="w3-margin w3-center">
+            <!-- Trigger/Open the Modal -->
+            <button onclick="document.getElementById('addProject').style.display='block'"
+            class="w3-btn w3-ripple w3-green">+ Add Project</button>
+    
+            <!-- The Modal -->
+            <div id="addProject" class="w3-modal">
+                <div class="w3-modal-content">
+                    <div class="w3-container">
+                        <form class="w3-container project-form" action="/projects" method="POST">
+                            <label>Project name</label>
+                            <input class="w3-input w3-border w3-round" type="text" name="projectName">
+                                
+                            <label>Description</label>
+                            <input class="w3-input w3-border w3-round" type="text" name="description">
+                
+                            <input class="w3-btn w3-margin-top w3-ripple w3-green" type="submit" value="Validate">
+                            <button onclick="document.getElementById('addProject').style.display='none'"
+                        class="w3-btn w3-ripple w3-margin-top w3-red">Cancel</span>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
 </body>
 </html>

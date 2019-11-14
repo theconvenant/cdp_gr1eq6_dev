@@ -3,6 +3,7 @@ const bodyParser = require('body-parser')
 const path = require('path')
 const app = express()
 const databaseSelect = require('./controller/database_select')
+const databaseInsert = require('./controller/database_insert')
 const authenticate = require('./models/authenticate')
 
 app.use(require('morgan')('combined'))
@@ -76,6 +77,18 @@ app.get('/projects',
             })
         })
     })
+
+app.post('/projects', function (req, res) {
+    console.log(req.body.projectName + req.body.projectName.length)
+    if (req.body.projectName.length !== 0) {
+        if (req.body.description.length === 0) {
+            databaseInsert.insertProject(req.body.projectName, req.user.username)
+        } else {
+            databaseInsert.insertProject(req.body.projectName, req.user.username, req.body.description)
+        }
+    }
+    res.redirect('/projects')
+})
 
 app.get('/logout',
     function (req, res) {
