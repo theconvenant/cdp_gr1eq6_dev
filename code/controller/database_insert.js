@@ -1,7 +1,5 @@
 const database = require('./database_header')
 
-database.getDatabase().then(db => db.connect())
-
 // ----------------------------------------------------------- voir si l'email et Password sont nécessaire (NON NULL)
 exports.insertUser = function (name, email, password) {
     return new Promise((resolve, reject) => {
@@ -20,6 +18,7 @@ exports.insertUser = function (name, email, password) {
     })
 }
 
+// -------------------------------------------------------------- penser à ajouter automatiquement dans projectUser
 exports.insertProject = function (projectName, ownerName, description = null) {
     return new Promise((resolve, reject) => {
         if (!projectName) reject(new Error('projectName is required'))
@@ -39,11 +38,11 @@ exports.insertProject = function (projectName, ownerName, description = null) {
     })
 }
 
-exports.insertProjectUser = function (projectName, userName) {
+exports.insertUserProject = function (userName, projectName) {
     return new Promise((resolve, reject) => {
         if (!projectName) reject(new Error('projectName is required'))
         if (!userName) reject(new Error('userName is required'))
-        const insertQuery = 'INSERT INTO projects_users VALUES ( \'' + projectName + '\', \'' + userName + '\');'
+        const insertQuery = 'INSERT INTO projects_users VALUES ( \'' + userName + '\', \'' + projectName + '\');'
         database.getDatabase().then(
             db => db.query(insertQuery, function (err, results) {
                 if (err) {
@@ -107,13 +106,14 @@ exports.insertIssue = function (issueId, description, difficulty, priority, usNu
 
 // this.insertUser('jane', 'jane@jane', 'JJ').catch(e => console.log(e))
 
-// this.insertProject('project1', 'jane', 'tres beau').catch(e => console.log(e))
-// this.insertProject('project2', 'joe').catch(e => console.log(e))
+// this.insertUserProject('jane', 'pro1').catch(e => console.log(e))
+
+this.insertProject('pro1', 'jane', 'tres beau').catch(e => console.log(e))
+this.insertProject('pro1', 'joe', 'tres mocjhe').catch(e => console.log(e))
+this.insertProject('project2', 'joe').catch(e => console.log(e))
 
 // this.insertTask('1', 'la tache', 'done', 'project1', '12').catch(e => console.log(e))
 // this.insertTask('2', 'la tache 2', 'done', 'project1').catch(e => console.log(e))
 
-// this.insertIssue(1, 'la issue', 3, 'high', 'US_12', 'done', 'pro2').catch(e => console.log(e))
+// this.insertIssue(1, 'la issue', 3, 'high', 'US_12', 'done', 'pro1').catch(e => console.log(e))
 // this.insertIssue(2, 'la issue 2', 1, 'low', 'US_14', 'not done', 'pro1').catch(e => console.log(e))
-
-database.getDatabase().then(db => db.end())

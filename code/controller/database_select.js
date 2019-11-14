@@ -19,32 +19,32 @@ exports.findUserByName = function (userName) {
 }
 
 // return a list of the name of the projects wich are own by OwnerName
-exports.findListProjectNameByOwnerName = function (ownerName) {
+exports.findListProjectsByOwnerName = function (ownerName) {
     return new Promise((resolve, reject) => {
         if (!ownerName) reject(new Error('userName is required'))
-        const findProjectName = 'SELECT _project_name FROM projects WHERE _owner_name = \'' + ownerName + '\';'
+        const findProjectName = 'SELECT * FROM projects WHERE _owner_name = \'' + ownerName + '\';'
         database.getDatabase().then(
             db => db.query(findProjectName, function (err, results) {
                 if (err) {
                     reject(err.sqlMessage)
                 }
-                resolve((results))
+                resolve(JSON.parse(JSON.stringify(results)))
             })
         )
     })
 }
 
 // return a list of project's name where userName is a member of
-exports.findListProjectNameByUser = function (userName) {
+exports.findListProjectsByUser = function (userName) {
     return new Promise((resolve, reject) => {
         if (!userName) reject(new Error('userName is required'))
-        const findProjectName = 'SELECT _project_name FROM projects_users WHERE _user_name = \'' + userName + '\';'
+        const findProjectName = 'SELECT * FROM projects WHERE _project_name IN (SELECT _project_name FROM projects_users WHERE _user_name = \'' + userName + '\');'
         database.getDatabase().then(
             db => db.query(findProjectName, function (err, results) {
                 if (err) {
                     reject(err.sqlMessage)
                 }
-                resolve(results)
+                resolve(JSON.parse(JSON.stringify(results)))
             })
         )
     })
@@ -60,12 +60,48 @@ exports.findProjectByName = function (projectName) {
                 if (err) {
                     reject(err.sqlMessage)
                 }
-                resolve(results)
+                resolve(JSON.parse(JSON.stringify(results)))
             })
         )
     })
 }
 
-this.findListProjectNameByOwnerName('jane').then(names => console.log(names))
+exports.isUserInProject = function (userName, projectName) {
+    return new Promise((resolve, reject) => {
+        if (!projectName) reject(new Error('projectName is required'))
+        if (!userName) reject(new Error('userName is required'))
+        const project = 'SELECT * FROM projects_users WHERE _project_name = \'' + projectName + '\' AND _user_name = \'' + userName + '\';'
+        database.getDatabase().then(
+            db => db.query(project, function (err, results) {
+                if (err) {
+                    reject(err.sqlMessage)
+                }
+                resolve(!(results === 0))
+            })
+        )
+    })
+}
 
-this.findProjectByName('project1').then(names => console.log(names))
+exports.findListIssuesByProjectName = function (projectName) {
+    return new Promise((resolve, reject) => {
+        if (!projectName) reject(new Error('projectName is required'))
+        const project = 'SELECT * FROM issues WHERE _project_name = \'' + projectName + '\' ;'
+        database.getDatabase().then(
+            db => db.query(project, function (err, results) {
+                if (err) {
+                    reject(err.sqlMessage)
+                }
+                resolve(JSON.parse(JSON.stringify(results)))
+            })
+        )
+    })
+}
+
+// this.findListProjectsByOwnerName('jane').then(names => console.log(names))
+this.findListProjectsByUser('jane').then(names => console.log(names))
+// this.findProjectByName('project1').then(names => console.log(names))
+
+// this.findListIssuesByProjectName('pro1').then(names => console.log(names)).catch(e => console.log(e))
+// this.findListIssuesByProjectName('project3').then(names => console.log(names)).catch(e => console.log(e))
+
+// this.isUserInProject('joe', 'pro21').then(names => console.log(names))
