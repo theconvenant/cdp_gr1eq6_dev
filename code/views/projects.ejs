@@ -11,21 +11,46 @@
          <div class="w3-left-align w3-padding"><h2>SAF-SCRUM</h2></div>
          <div class="w3-display-topright"><a href="/logout" class="w3-button w3-teal w3-hover-green"><h2>logout</h2></a></div>
     </div>
-    <div class="w3-display-middle">
-    <table class="w3-table-all w3-hoverable w3-card-4">
-        <tr class = "w3-blue">
-            <th>Project Name</th>
-            <th>Description</th>
-            <th>Members</th>
-        </tr>
-        <% for (var i = 0; i < projects.length; ++i) { %>
-        <tr >
-            <td><%= projects[i]._project_name %></td>
-            <td><%= projects[i].description %></td>
-            <td><%= projects[i]._owner_name %></td>
-        </tr>
-        <% }; %>
+    <div class="w3-margin w3-center">
+        <input class="w3-btn w3-ripple w3-green" type="button" value="+ Add Project">
+    </div>
+    <% if (projectsOwner.length != 0) { %>
+    <div id="ProjectsOwn" class="w3-margin">
+        <table class="w3-table-all w3-hoverable w3-card-4">
+            <h3 class="w3-margin w3-center">Projects Own</h3>
+            <tr class = "w3-blue">
+                <th>Project Name</th>
+                <th>Description</th>
+                <th>Members</th>
+            </tr>
+            <% for (var i = 0; i < projectsOwner.length; ++i) { %>
+            <tr >
+                <td><%= projectsOwner[i]._project_name %></td>
+                <td><%= projectsOwner[i].description %></td>
+                <td><%= projectsOwner[i]._owner_name %></td>
+            </tr>
+            <% }; %>
         </table>
     </div>
+    <% }; %>
+    <% if (projectsMember.length != 0) { %>
+    <div id="SuscribedProjects" class="w3-margin">
+            <table class="w3-table-all w3-hoverable w3-card-4">
+                <h3 class="w3-margin w3-center">Suscribed Projects</h3>
+                <tr class = "w3-blue">
+                    <th>Project Name</th>
+                    <th>Description</th>
+                    <th>Members</th>
+                </tr>
+                <% for (var i = 0; i < projectsMember.length; ++i) { %>
+                <tr >
+                    <td><%= projectsMember[i]._project_name %></td>
+                    <td><%= projectsMember[i].description %></td>
+                    <td><%= projectsMember[i]._owner_name %></td>
+                </tr>
+                <% }; %>
+        </table>
+    </div>
+    <% }; %>
 </body>
 </html>

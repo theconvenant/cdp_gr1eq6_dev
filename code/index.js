@@ -1,10 +1,8 @@
 const express = require('express')
 const bodyParser = require('body-parser')
-// const ejs = require('ejs')
 const path = require('path')
 const app = express()
 const databaseSelect = require('./controller/database_select')
-
 const authenticate = require('./models/authenticate')
 
 app.use(require('morgan')('combined'))
@@ -72,12 +70,10 @@ app.post('/',
 app.get('/projects',
     require('connect-ensure-login').ensureLoggedIn(),
     function (req, res) {
-        databaseSelect.findListProjectNameByOwnerName(req.user.username).then(function (result) {
-            console.log(result)
-            result = JSON.parse(JSON.stringify(result))
-            console.log(result)
-            console.log(result[0])
-            res.render('projects', { projects: result })
+        databaseSelect.findListProjectsByOwnerName(req.user.username).then(function (projectsOwner) {
+            databaseSelect.findListProjectsByUser(req.user.username).then(function (projectsMember) {
+                res.render('projects', { projectsOwner: projectsOwner, projectsMember: projectsMember })
+            })
         })
     })
 
