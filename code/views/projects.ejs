@@ -21,10 +21,10 @@
                 <th>Members</th>
             </tr>
             <% for (var i = 0; i < projectsOwner.length; ++i) { %>
-            <tr >
-                <td><%= projectsOwner[i]._project_name %></td>
-                <td><%= projectsOwner[i].description %></td>
-                <td><%= projectsOwner[i]._owner_name %></td>
+            <tr class="Projects">
+                    <td><%= projectsOwner[i]._project_name %></td>
+                    <td><%= projectsOwner[i].description %></td>
+                    <td><%= projectsOwner[i]._owner_name %></td>
             </tr>
             <% }; %>
         </table>
@@ -40,7 +40,7 @@
                     <th>Members</th>
                 </tr>
                 <% for (var i = 0; i < projectsMember.length; ++i) { %>
-                <tr >
+                <tr class="Projects">
                     <td><%= projectsMember[i]._project_name %></td>
                     <td><%= projectsMember[i].description %></td>
                     <td><%= projectsMember[i]._owner_name %></td>
@@ -50,11 +50,10 @@
     </div>
     <% }; %>
     <div class="w3-margin w3-center">
-            <!-- Trigger/Open the Modal -->
+
             <button onclick="document.getElementById('addProject').style.display='block'"
             class="w3-btn w3-ripple w3-green">+ Add Project</button>
-    
-            <!-- The Modal -->
+
             <div id="addProject" class="w3-modal">
                 <div class="w3-modal-content">
                     <div class="w3-container">

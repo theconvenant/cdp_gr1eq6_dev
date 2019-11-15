@@ -96,12 +96,3 @@ exports.findListIssuesByProjectName = function (projectName) {
         )
     })
 }
-
-// this.findListProjectsByOwnerName('jane').then(names => console.log(names))
-this.findListProjectsByUser('jane').then(names => console.log(names))
-// this.findProjectByName('project1').then(names => console.log(names))
-
-// this.findListIssuesByProjectName('pro1').then(names => console.log(names)).catch(e => console.log(e))
-// this.findListIssuesByProjectName('project3').then(names => console.log(names)).catch(e => console.log(e))
-
-// this.isUserInProject('joe', 'pro21').then(names => console.log(names))
