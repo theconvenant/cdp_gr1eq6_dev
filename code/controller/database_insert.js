@@ -212,23 +212,3 @@ exports.insertSprint = function (name, startDate, endDate, projectId, descriptio
 // exports.associateReleaseToSprint = function (releaseId, sprintName) {
 //     //
 // }
-
-// this.insertUser('jane', 'jane@jane', 'JJ').catch(e => console.log(e))
-// this.insertUserProject('jane', 2).catch(e => console.log(e))
-
-// this.insertProject('pro1', 'jack').catch(e => console.log(e))
-// this.insertProject('pro2', 'joe', 'tres mocjhe').catch(e => console.log(e))
-// this.insertProject('pro1', 'jack').catch(e => console.log(e))
-
-// this.insertTask('1', 'la tache', 'done', 2, '12').catch(e => console.log(e))
-// this.insertTask('2', 'la tache 2', 'done', 5).catch(e => console.log(e))
-// this.insertTaskTask(2, 1).catch(e => console.log(e))
-// this.insertTaskUser(1, 'jane').catch(e => console.log(e))
-// this.insertIssueInSprint(1, 2).catch(e => console.log(e))
-// this.insertIssueInRelease(1, 2).catch(e => console.log(e))
-
-// this.insertIssue(1, 'la issue', 3, 'high', 'US_12', 'done', 2).catch(e => console.log(e))
-// this.insertIssue(2, 'la issue 2', 1, 'low', 'US_14', 'not done', 5).catch(e => console.log(e))
-
-// this.insertSprint('sp1', '2000/09/12', '2000-09-15', 5).catch(e => console.log(e))
-// this.insertSprint('sp1', '2000/09/12', '2000-09-15', 2, 'la desc').catch(e => console.log(e))

@@ -224,17 +224,3 @@ exports.findReleaseListInSprint = function (sprintId, projectId) {
         )
     })
 }
-
-// this.findListProjectsByOwnerName('jane').then(names => console.log(names))
-// this.findListProjectsByUser('jane').then(names => console.log(names))
-// this.findProjectByName('project1').then(names => console.log(names))
-
-// this.findListIssuesByProjectID(2).then(names => console.log(names)).catch(e => console.log(e))
-// this.findListIssuesByProjectID(4).then(names => console.log(names)).catch(e => console.log(e))
-
-// this.isUserInProject('joe', 1).then(names => console.log(names))
-
-// this.findMembersOfProjectID(2).then(names => console.log(names)).catch(e => console.log(e))
-// this.findOwnerofProjectID(2).then(names => console.log(names)).catch(e => console.log(e))
-
-// this.findSprintByName(1, 5).then(names => console.log(names)).catch(e => console.log(e))

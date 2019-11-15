@@ -73,8 +73,3 @@ exports.deleteAccount = function (userName) {
         )
     })
 }
-
-// this.deleteProject('project1', 'jane').then(e => console.log(e))
-// this.deleteIssue(1, 5).then(e => console.log(e)).catch(e => console.log(e))
-// this.removeMemberFromProject(2, 'jane').then(e => console.log(e)).catch(e => console.log(e))
-// this.deleteAccount('jane').then(e => console.log(e)).catch(e => console.log(e))
