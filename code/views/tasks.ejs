@@ -7,10 +7,32 @@
         changeOnglet('tasks')
     </script>
 </head>
-            
-<body >
 
+<body>
+    </div>
+    <% if (taskList.length != 0) { %>
+    <div id="TaskList" class="w3-margin">
+        <table class="w3-table-all w3-hoverable w3-card-4">
+            <h3 class="w3-margin w3-center">Task List</h3>
+            <tr class="w3-blue">
+                <th>Task id</th>
+                <th>Description</th>
+                <th>State</th>
+                <th>Issue id</th>
+            </tr>
+            <% for (var i = 0; i < taskList.length; ++i) { %>
+            <tr class="Projects">
+                <td><%= taskList[i]._task_id %></td>
+                <td><%= taskList[i].description %></td>
+                <td><%= taskList[i].state %></td>
+                <td><%= taskList[i]._issue_id %></td>
+            </tr>
+            <% }; %>
+        </table>
+    </div>
+    <% }; %>
 
 
 </body>
+
 </html>

@@ -224,3 +224,19 @@ exports.findReleaseListInSprint = function (sprintId, projectId) {
         )
     })
 }
+
+exports.findTasksByProjectId = function (projectId) {
+    return new Promise((resolve, reject) => {
+        if (!projectId) reject(new Error('projectId is required'))
+        const taskListQuery =
+        'SELECT * FROM tasks WHERE _project_id = ' + projectId + ';'
+        database.getDatabase().then(
+            db => db.query(taskListQuery, function (err, results) {
+                if (err) {
+                    reject(err.sqlMessage)
+                }
+                resolve(JSON.parse(JSON.stringify(results)))
+            })
+        )
+    })
+}
