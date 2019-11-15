@@ -1,0 +1,15 @@
+DROP TABLE IF EXISTS documentation;
+DROP TABLE IF EXISTS issues;
+DROP TABLE IF EXISTS projects;
+DROP TABLE IF EXISTS projects_users;
+DROP TABLE IF EXISTS releases;
+DROP TABLE IF EXISTS releases_issues;
+DROP TABLE IF EXISTS documentation;
+DROP TABLE IF EXISTS sprints;
+DROP TABLE IF EXISTS sprints_releases;
+DROP TABLE IF EXISTS sprints_issues;
+DROP TABLE IF EXISTS tasks;
+DROP TABLE IF EXISTS tasks_tasks;
+DROP TABLE IF EXISTS tasks_users;
+DROP TABLE IF EXISTS tests;
+DROP TABLE IF EXISTS users

@@ -19,14 +19,30 @@ exports.insertUser = function (name, email, password) {
 }
 
 // -------------------------------------------------------------- penser à ajouter automatiquement dans projectUser
+exports.insertUserProject = function (userName, projectId) {
+    return new Promise((resolve, reject) => {
+        if (!projectId) reject(new Error('projectName is required'))
+        if (!userName) reject(new Error('userName is required'))
+        const insertQuery = 'INSERT INTO projects_users VALUES ( \'' + userName + '\', ' + projectId + ');'
+        database.getDatabase().then(
+            db => db.query(insertQuery, function (err, results) {
+                if (err) {
+                    reject(err.sqlMessage)
+                }
+                resolve(results)
+            })
+        )
+    })
+}
+
 exports.insertProject = function (projectName, ownerName, description = null) {
     return new Promise((resolve, reject) => {
-        if (!projectName) reject(new Error('projectName is required'))
+        if (!projectName) reject(new Error('projectId is required'))
         if (!ownerName) reject(new Error('ownerName is required'))
         if (description) {
             description = '\'' + description + '\''
         }
-        const insertQuery = 'INSERT INTO projects(_project_name,_owner_name,description) VALUES ( \'' + projectName + '\', \'' + ownerName + '\', ' + description + ');'
+        const insertQuery = 'INSERT INTO projects (_project_name, _owner_name, description) VALUES ( \'' + projectName + '\', \'' + ownerName + '\', ' + description + ');'
         database.getDatabase().then(
             db => db.query(insertQuery, function (err, results) {
                 if (err) {
@@ -38,32 +54,18 @@ exports.insertProject = function (projectName, ownerName, description = null) {
     })
 }
 
-exports.insertUserProject = function (userName, projectName) {
-    return new Promise((resolve, reject) => {
-        if (!projectName) reject(new Error('projectName is required'))
-        if (!userName) reject(new Error('userName is required'))
-        const insertQuery = 'INSERT INTO projects_users VALUES ( \'' + userName + '\', \'' + projectName + '\');'
-        database.getDatabase().then(
-            db => db.query(insertQuery, function (err, results) {
-                if (err) {
-                    reject(err.sqlMessage)
-                }
-                resolve(results)
-            })
-        )
-    })
-}
 // if issueId exist, I have to add to it ' before and after for the SQL command line
-exports.insertTask = function (taskId, description, state, projectName, issueId = null) {
+exports.insertTask = function (taskId, description, state, projectId, issueId = null) {
     return new Promise((resolve, reject) => {
         if (!taskId) reject(new Error('taskId is required'))
         if (!description) reject(new Error('description is required'))
         if (!state) reject(new Error('state is required'))
+        if (!projectId) reject(new Error('projectId is required'))
         if (issueId) {
             issueId = '\'' + issueId + '\''
         }
         const insertQuery = 'INSERT INTO tasks VALUES ( \'' + taskId + '\', \'' +
-        description + '\', \'' + state + '\', ' + issueId + ', \'' + projectName + '\');'
+        description + '\', \'' + state + '\', ' + issueId + ', ' + projectId + ');'
         database.getDatabase().then(
             db => db.query(insertQuery, function (err, results) {
                 if (err) {
@@ -75,12 +77,49 @@ exports.insertTask = function (taskId, description, state, projectName, issueId 
     })
 }
 
-// exports.insertTaskTask
-// exports.insertTaskUsers
+/**
+ * @param {number} taskId
+ * @param {number} dependencyTaskId the task on which the first task depends on
+ */
+exports.insertTaskTask = function (taskId, dependencyTaskId) {
+    return new Promise((resolve, reject) => {
+        if (!taskId) reject(new Error('taskId is required'))
+        if (!dependencyTaskId) reject(new Error('dependencyTaskId is required'))
+        const insertQuery = 'INSERT INTO tasks_tasks VALUES  (' + taskId + ', ' + dependencyTaskId + ');'
+        database.getDatabase().then(
+            db => db.query(insertQuery, function (err, results) {
+                if (err) {
+                    reject(err.sqlMessage)
+                }
+                resolve(results)
+            })
+        )
+    })
+}
+
+/**
+ * @param {number} taskId
+ * @param {String} userName
+ */
+exports.insertTaskUser = function (taskId, userName) {
+    return new Promise((resolve, reject) => {
+        if (!taskId) reject(new Error('taskId is required'))
+        if (!userName) reject(new Error('userName is required'))
+        const insertQuery = 'INSERT INTO tasks_users VALUES  (' + taskId + ', \'' + userName + '\');'
+        database.getDatabase().then(
+            db => db.query(insertQuery, function (err, results) {
+                if (err) {
+                    reject(err.sqlMessage)
+                }
+                resolve(results)
+            })
+        )
+    })
+}
 
 // issueId and difficulty are Integers, the rest are Strings
 // this is why they both are not souronded by ' in the insertQuery String
-exports.insertIssue = function (issueId, description, difficulty, priority, usNum, testState, projectName) {
+exports.insertIssue = function (issueId, description, difficulty, priority, usNum, testState, projectId) {
     return new Promise((resolve, reject) => {
         if (!issueId) reject(new Error('issueId is required'))
         if (!description) reject(new Error('description is required'))
@@ -88,9 +127,9 @@ exports.insertIssue = function (issueId, description, difficulty, priority, usNu
         if (!priority) reject(new Error('priority is required'))
         if (!usNum) reject(new Error('usNum is required'))
         if (!testState) reject(new Error('testState is required'))
-        if (!projectName) reject(new Error('projectName is required'))
+        if (!projectId) reject(new Error('projectId is required'))
         const insertQuery = 'INSERT INTO issues VALUES (' + issueId + ', \'' +
-        description + '\', ' + difficulty + ', \'' + priority + '\', \'' + usNum + '\', \'' + testState + '\', \'' + projectName + '\');'
+        description + '\', ' + difficulty + ', \'' + priority + '\', \'' + usNum + '\', \'' + testState + '\', ' + projectId + ');'
         database.getDatabase().then(
             db => db.query(insertQuery, function (err, results) {
                 if (err) {
@@ -101,3 +140,95 @@ exports.insertIssue = function (issueId, description, difficulty, priority, usNu
         )
     })
 }
+
+/**
+ * @param {number} issueId
+ * @param {number} releaseId
+ */
+exports.insertIssueInRelease = function (issueId, releaseId) {
+    return new Promise((resolve, reject) => {
+        if (!issueId) reject(new Error('issueId is required'))
+        if (!releaseId) reject(new Error('releaseId is required'))
+        const insertQuery = 'INSERT INTO releases_issues VALUES (' + issueId + ', ' + releaseId + ');'
+        database.getDatabase().then(
+            db => db.query(insertQuery, function (err, results) {
+                if (err) {
+                    reject(err.sqlMessage)
+                }
+                resolve(results)
+            })
+        )
+    })
+}
+
+/**
+ * @param {number} issueId
+ * @param {number} sprintId
+ */
+exports.insertIssueInSprint = function (issueId, sprintId) {
+    return new Promise((resolve, reject) => {
+        if (!issueId) reject(new Error('issueId is required'))
+        if (!sprintId) reject(new Error('sprintId is required'))
+        const insertQuery = 'INSERT INTO sprints_issues VALUES (' + issueId + ', ' + sprintId + ');'
+        database.getDatabase().then(
+            db => db.query(insertQuery, function (err, results) {
+                if (err) {
+                    reject(err.sqlMessage)
+                }
+                resolve(results)
+            })
+        )
+    })
+}
+
+/**
+ * @param {String} name
+ * @param {String} startDate the format must be 'YYY-MM-DD'
+ * @param {String} endDate the format must be 'YYY-MM-DD'
+ * @param {number} projectId
+ * @param {String} description not necessary
+ */
+exports.insertSprint = function (name, startDate, endDate, projectId, description = null) {
+    return new Promise((resolve, reject) => {
+        if (!name) reject(new Error('name is required'))
+        if (!startDate) reject(new Error('startDate is required'))
+        if (!endDate) reject(new Error('endDate is required'))
+        if (!projectId) reject(new Error('projectId is required'))
+        if (description) {
+            description = '\'' + description + '\''
+        }
+        const insertQuery = 'INSERT INTO sprints VALUES ( \'' + name + '\', \'' + startDate + '\', \'' + endDate + '\', ' + description + ', ' + projectId + ');'
+        database.getDatabase().then(
+            db => db.query(insertQuery, function (err, results) {
+                if (err) {
+                    reject(err.sqlMessage)
+                }
+                resolve(results)
+            })
+        )
+    })
+}
+
+// exports.associateReleaseToSprint = function (releaseId, sprintName) {
+//     //
+// }
+
+// this.insertUser('jane', 'jane@jane', 'JJ').catch(e => console.log(e))
+// this.insertUserProject('jane', 2).catch(e => console.log(e))
+
+// this.insertProject('pro1', 'jack').catch(e => console.log(e))
+// this.insertProject('pro2', 'joe', 'tres mocjhe').catch(e => console.log(e))
+// this.insertProject('pro1', 'jack').catch(e => console.log(e))
+
+// this.insertTask('1', 'la tache', 'done', 2, '12').catch(e => console.log(e))
+// this.insertTask('2', 'la tache 2', 'done', 5).catch(e => console.log(e))
+// this.insertTaskTask(2, 1).catch(e => console.log(e))
+// this.insertTaskUser(1, 'jane').catch(e => console.log(e))
+// this.insertIssueInSprint(1, 2).catch(e => console.log(e))
+// this.insertIssueInRelease(1, 2).catch(e => console.log(e))
+
+// this.insertIssue(1, 'la issue', 3, 'high', 'US_12', 'done', 2).catch(e => console.log(e))
+// this.insertIssue(2, 'la issue 2', 1, 'low', 'US_14', 'not done', 5).catch(e => console.log(e))
+
+// this.insertSprint('sp1', '2000/09/12', '2000-09-15', 5).catch(e => console.log(e))
+// this.insertSprint('sp1', '2000/09/12', '2000-09-15', 2, 'la desc').catch(e => console.log(e))

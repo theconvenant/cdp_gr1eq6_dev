@@ -1,7 +1,9 @@
 const database = require('./database_header')
 
-database.getDatabase().then(db => db.connect())
-
+/**
+ * @param {String} projectName
+ * @param {String} ownerName
+ */
 exports.deleteProject = function (projectName, ownerName) {
     return new Promise((resolve, reject) => {
         if (!ownerName) reject(new Error('ownerName is required'))
@@ -17,7 +19,62 @@ exports.deleteProject = function (projectName, ownerName) {
         )
     })
 }
+/**
+ * @param {number} issueId
+ * @param {number} projectId
+ */
+exports.deleteIssue = function (issueId, projectId) {
+    return new Promise((resolve, reject) => {
+        if (!issueId) reject(new Error('issueId is required'))
+        if (!projectId) reject(new Error('projectId is required'))
+        const deleteQuery = 'DELETE FROM issues WHERE _issue_id = ' + issueId + ' AND _project_id = ' + projectId + ';'
+        database.getDatabase().then(
+            db => db.query(deleteQuery, function (err, results) {
+                if (err) {
+                    reject(err.sqlMessage)
+                }
+                resolve(results)
+            })
+        )
+    })
+}
 
-this.deleteProject('project1', 'jane').then(e => console.log(e))
+/**
+ * @param {number} projectId
+ * @param {String} userName
+ */
+exports.removeMemberFromProject = function (projectId, userName) {
+    return new Promise((resolve, reject) => {
+        if (!projectId) reject(new Error('issueId is required'))
+        if (!userName) reject(new Error('projectName is required'))
+        const deleteQuery = 'DELETE FROM projects_users WHERE _project_id = ' + projectId + ' AND _user_name = \'' + userName + '\';'
+        database.getDatabase().then(
+            db => db.query(deleteQuery, function (err, results) {
+                if (err) {
+                    reject(err.sqlMessage)
+                }
+                resolve(results)
+            })
+        )
+    })
+}
+// --------- peut on faire en sorte que lorsque qu'on supprime un compte, toutes les taches qui lui étaient assemblées ne le soient plus après (automatiquement gérer par la bd) ?
+exports.deleteAccount = function (userName) {
+    return new Promise((resolve, reject) => {
+        if (!userName) reject(new Error('projectName is required'))
+        const deleteQuery = 'DELETE FROM users WHERE username = \'' + userName + '\';'
+        database.getDatabase().then(
+            db => db.query(deleteQuery, function (err, results) {
+                if (err) {
+                    reject(err.sqlMessage)
+                }
+                resolve(results)
+            })
+        )
+    })
+}
 
-database.getDatabase().then(db => db.end())
+// this.deleteProject('project1', 'jane').then(e => console.log(e))
+// this.deleteIssue(1, 5).then(e => console.log(e)).catch(e => console.log(e))
+// this.removeMemberFromProject(2, 'jane').then(e => console.log(e)).catch(e => console.log(e))
+// this.deleteAccount('jane').then(e => console.log(e)).catch(e => console.log(e))
