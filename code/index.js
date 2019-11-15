@@ -30,37 +30,52 @@ app.post('/register', function (req, res) {
     res.render('register')
 })
 
-app.get('/summary', function (req, res) {
-    res.render('summary')
-})
+app.get('/summary',
+    require('connect-ensure-login').ensureLoggedIn(),
+    function (req, res) {
+        res.render('summary')
+    })
 
-app.get('/issues', function (req, res) {
-    res.render('issues')
-})
+app.get('/issues',
+    require('connect-ensure-login').ensureLoggedIn(),
+    function (req, res) {
+        res.render('issues')
+    })
 
-app.get('/tasks', function (req, res) {
-    res.render('tasks')
-})
+app.get('/tasks', require('connect-ensure-login').ensureLoggedIn(),
+    function (req, res) {
+        res.render('tasks')
+    })
 
-app.get('/tests', function (req, res) {
-    res.render('tests')
-})
+app.get('/tests',
+    require('connect-ensure-login').ensureLoggedIn(),
+    function (req, res) {
+        res.render('tests')
+    })
 
-app.get('/sprints', function (req, res) {
-    res.render('sprints')
-})
+app.get('/sprints',
+    require('connect-ensure-login').ensureLoggedIn(),
+    function (req, res) {
+        res.render('sprints')
+    })
 
-app.get('/releases', function (req, res) {
-    res.render('releases')
-})
+app.get('/releases',
+    require('connect-ensure-login').ensureLoggedIn(),
+    function (req, res) {
+        res.render('releases')
+    })
 
-app.get('/documentation', function (req, res) {
-    res.render('documentation')
-})
+app.get('/documentation',
+    require('connect-ensure-login').ensureLoggedIn(),
+    function (req, res) {
+        res.render('documentation')
+    })
 
-app.get('/projectManagement', function (req, res) {
-    res.render('projectManagement')
-})
+app.get('/projectManagement',
+    require('connect-ensure-login').ensureLoggedIn(),
+    function (req, res) {
+        res.render('projectManagement')
+    })
 
 app.post('/',
     authenticate.passport.authenticate('local', { failureRedirect: '/' }),
@@ -93,6 +108,11 @@ app.post('/projects', function (req, res) {
 app.get('/logout',
     function (req, res) {
         req.logout()
+        res.redirect('/')
+    })
+
+app.get('/login',
+    function (req, res) {
         res.redirect('/')
     })
 
