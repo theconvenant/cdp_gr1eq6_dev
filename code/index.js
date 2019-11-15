@@ -36,12 +36,6 @@ app.get('/summary',
         res.render('summary')
     })
 
-app.get('/issues',
-    require('connect-ensure-login').ensureLoggedIn(),
-    function (req, res) {
-        res.render('issues')
-    })
-
 app.get('/tasks', require('connect-ensure-login').ensureLoggedIn(),
     function (req, res) {
         res.render('tasks')
@@ -104,6 +98,18 @@ app.post('/projects', function (req, res) {
     }
     res.redirect('/projects')
 })
+
+app.get('/issues',
+    require('connect-ensure-login').ensureLoggedIn(),
+    function (req, res) {
+        res.render('issues', { idProject: req.body.idProject })
+    })
+
+app.post('/issues',
+    function (req, res) {
+        console.log(req.body.idProject)
+        res.redirect('/issues')
+    })
 
 app.get('/logout',
     function (req, res) {
