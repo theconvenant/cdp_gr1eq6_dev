@@ -30,14 +30,6 @@ app.post('/register', function (req, res) {
     res.render('register')
 })
 
-app.get('/index', function (req, res) {
-    res.render('index')
-})
-
-app.post('/index', function (req, res) {
-    res.render('index')
-})
-
 app.get('/summary', function (req, res) {
     res.render('summary')
 })
@@ -58,8 +50,16 @@ app.get('/sprints', function (req, res) {
     res.render('sprints')
 })
 
+app.get('/releases', function (req, res) {
+    res.render('releases')
+})
+
 app.get('/documentation', function (req, res) {
     res.render('documentation')
+})
+
+app.get('/projectManagement', function (req, res) {
+    res.render('projectManagement')
 })
 
 app.post('/',
