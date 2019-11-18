@@ -73,3 +73,23 @@ exports.deleteAccount = function (userName) {
         )
     })
 }
+
+/**
+ * @param {number} projectId
+ * @param {number} taskId
+ */
+exports.deleteTask = function (projectId, taskId) {
+    return new Promise((resolve, reject) => {
+        if (!taskId) reject(new Error('taskId is required'))
+        if (!projectId) reject(new Error('projectId is required'))
+        const deleteQuery = 'DELETE FROM tasks WHERE _task_id = ' + taskId + ' AND _project_id = ' + projectId + ';'
+        database.getDatabase().then(
+            db => db.query(deleteQuery, function (err, results) {
+                if (err) {
+                    reject(err.sqlMessage)
+                }
+                resolve(results)
+            })
+        )
+    })
+}

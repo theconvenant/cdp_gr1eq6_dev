@@ -55,8 +55,8 @@ CREATE TABLE IF NOT EXISTS `projects` (
   `_owner_name` varchar(30) collate utf8_unicode_ci NOT NULL,
   `description` text collate utf8_unicode_ci,
   PRIMARY KEY  (`_project_name`,`_owner_name`),
-  UNIQUE KEY `_project_id` (`_project_id`),
-  KEY `user_exists` (`_owner_name`)
+  FOREIGN KEY (_project_id)
+    REFERENCES users(username)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=4 ;
 
 -- --------------------------------------------------------

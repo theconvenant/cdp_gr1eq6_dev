@@ -4,6 +4,7 @@ const path = require('path')
 const app = express()
 const databaseSelect = require('./controller/database_select')
 const databaseInsert = require('./controller/database_insert')
+const databaseDelete = require('./controller/database_delete')
 const authenticate = require('./models/authenticate')
 
 app.use(require('morgan')('combined'))
@@ -43,13 +44,34 @@ app.post('/summary',
 
 app.get('/tasks', require('connect-ensure-login').ensureLoggedIn(),
     function (req, res) {
-        res.render('tasks', { idProject: req.body.idProject })
+        databaseSelect.findTasksByProjectId(4).then(taskList => {
+            res.render('tasks', { taskList: taskList })
+        })
     })
 
-app.post('/tasks',
-    function (req, res) {
-        res.redirect('/tasks')
-    })
+app.post('/tasks', function (req, res) {
+    if (req.body.issueId === '') {
+        databaseInsert.insertTask(req.body.taskId, req.body.description,
+            req.body.state, 4)
+            .catch(err => console.log(err))
+    } else {
+        databaseInsert.insertTask(req.body.taskId, req.body.description,
+            req.body.state, 4, req.body.issueId)
+            .catch(err => console.log(err))
+    }
+    res.redirect('/tasks')
+})
+
+app.post('/updateTask', function (req, res) {
+    databaseInsert.updateTask(4, req.body.taskId, req.body.description,
+        req.body.state, req.body.issueId)
+    res.redirect('/tasks')
+})
+
+app.post('/deleteTask', function (req, res) {
+    databaseDelete.deleteTask(4, req.body.taskId)
+    res.redirect('/tasks')
+})
 
 app.get('/tests',
     require('connect-ensure-login').ensureLoggedIn(),
