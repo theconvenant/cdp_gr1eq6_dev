@@ -33,42 +33,77 @@ app.post('/register', function (req, res) {
 app.get('/summary',
     require('connect-ensure-login').ensureLoggedIn(),
     function (req, res) {
-        res.render('summary')
+        res.render('summary', { idProject: req.body.idProject })
+    })
+
+app.post('/summary',
+    function (req, res) {
+        res.render('summary', { idProject: req.body.idProject })
     })
 
 app.get('/tasks', require('connect-ensure-login').ensureLoggedIn(),
     function (req, res) {
-        res.render('tasks')
+        res.render('tasks', { idProject: req.body.idProject })
+    })
+
+app.post('/tasks',
+    function (req, res) {
+        res.redirect('/tasks')
     })
 
 app.get('/tests',
     require('connect-ensure-login').ensureLoggedIn(),
     function (req, res) {
-        res.render('tests')
+        res.render('tests', { idProject: req.body.idProject })
+    })
+
+app.post('/tests',
+    function (req, res) {
+        res.redirect('/tests')
     })
 
 app.get('/sprints',
     require('connect-ensure-login').ensureLoggedIn(),
     function (req, res) {
-        res.render('sprints')
+        res.render('sprints', { idProject: req.body.idProject })
+    })
+
+app.post('/sprints',
+    function (req, res) {
+        res.redirect('/sprints')
     })
 
 app.get('/releases',
     require('connect-ensure-login').ensureLoggedIn(),
     function (req, res) {
-        res.render('releases')
+        res.render('releases', { idProject: req.body.idProject })
+    })
+
+app.post('/releases',
+    function (req, res) {
+        res.redirect('/releases')
     })
 
 app.get('/documentation',
     require('connect-ensure-login').ensureLoggedIn(),
     function (req, res) {
-        res.render('documentation')
+        res.render('documentation', { idProject: req.body.idProject })
+    })
+
+app.post('/documentation',
+    function (req, res) {
+        res.redirect('/documentation')
     })
 
 app.get('/projectManagement',
     require('connect-ensure-login').ensureLoggedIn(),
     function (req, res) {
-        res.render('projectManagement')
+        res.render('projectManagement', { idProject: req.body.idProject })
+    })
+
+app.post('/projectManagement',
+    function (req, res) {
+        res.redirect('/projectManagement')
     })
 
 app.post('/',
@@ -107,8 +142,7 @@ app.get('/issues',
 
 app.post('/issues',
     function (req, res) {
-        console.log(req.body.idProject)
-        res.redirect('/issues')
+        res.render('issues', { idProject: req.body.idProject })
     })
 
 app.get('/logout',
