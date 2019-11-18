@@ -2,10 +2,9 @@
 <html lang="en">
 
 <head>
-    <% include  ./includes/header %>
-    <script type="text/javascript">
-        changeOnglet('tasks')
-    </script>
+    <!-- pas de header pour cette page-->
+    <link rel='stylesheet' href='css/w3.css'>
+    <link rel='stylesheet' href='css/hideInput.css'>
 </head>
 
 <body>
@@ -25,12 +24,71 @@
                 <td><%= taskList[i]._task_id %></td>
                 <td><%= taskList[i].description %></td>
                 <td><%= taskList[i].state %></td>
-                <td><%= taskList[i]._issue_id %></td>
+                <td><%= taskList[i]._issue_id %> </td>
+                <th><button onclick="document.getElementById('updateTask<%=taskList[i]._task_id %>').style.display='block'"
+                    class="w3-btn w3-ripple w3-green">Modify</button></th>
+
+                    <div class="w3-margin w3-center">
+                        <div id="updateTask<%=taskList[i]._task_id %>" class="w3-modal">
+                            <div class="w3-modal-content">
+                                <div class="w3-container">
+                                    <form class="w3-container Task-form" action="/updateTask" method="POST">
+                                        <label>Task id</label>
+                                        <input class="w3-input w3-border w3-round" type="number" name="taskId" value='<%=taskList[i]._task_id %>' readonly>
+                                            
+                                        <label>Description</label>
+                                        <input class="w3-input w3-border w3-round" type="text" name="description" value='<%=taskList[i].description %>' >
+                
+                                        <label>State</label>
+                                        <input class="w3-input w3-border w3-round" type="text" name="state" value="<%=taskList[i].state %>" required>
+                
+                                        <label>Issue Id</label>
+                                        <input class="w3-input w3-border w3-round" type="number" name="issueId" value="<%=taskList[i]._issue_id %>">
+                
+                                        <input class="w3-btn w3-margin-top w3-ripple w3-green" type="submit" value="Validate">
+                
+                                        <button onclick="document.getElementById('updateTask<%=taskList[i]._task_id %>').style.display='none'"
+                                    class="w3-btn w3-ripple w3-margin-top w3-red">Cancel</span>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div> 
             </tr>
             <% }; %>
         </table>
     </div>
     <% }; %>
+    <div class="w3-margin w3-center">
+
+        <button onclick="document.getElementById('addTask').style.display='block'"
+        class="w3-btn w3-ripple w3-green">+ Add Task</button>
+
+        <div id="addTask" class="w3-modal">
+            <div class="w3-modal-content">
+                <div class="w3-container">
+                    <form class="w3-container Task-form" action="/Tasks" method="POST">
+                        <label>Task id</label>
+                        <input class="w3-input w3-border w3-round" type="number" name="taskId" placeholder="must be an integer" required>
+                            
+                        <label>Description</label>
+                        <input class="w3-input w3-border w3-round" type="text" name="description" required>
+
+                        <label>State</label>
+                        <input class="w3-input w3-border w3-round" type="text" name="state" placeholder="TODO or ..." required>
+
+                        <label>Issue Id</label>
+                        <input class="w3-input w3-border w3-round" type="number" name="issueId">
+
+                        <input class="w3-btn w3-margin-top w3-ripple w3-green" type="submit" value="Validate">
+
+                        <button onclick="document.getElementById('addTask').style.display='none'"
+                    class="w3-btn w3-ripple w3-margin-top w3-red">Cancel</span>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 
 
 </body>

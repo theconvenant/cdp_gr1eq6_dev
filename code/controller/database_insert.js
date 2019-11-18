@@ -209,6 +209,33 @@ exports.insertSprint = function (name, startDate, endDate, projectId, descriptio
     })
 }
 
+/**
+ * @param {number} projectId
+ * @param {number} taskId
+ * @param {String} description
+ * @param {String} state
+ * @param {number} issueId
+ */
+exports.updateTask = function (projectId, taskId, description, state, issueId) {
+    return new Promise((resolve, reject) => {
+        if (!projectId) reject(new Error('projectId is required'))
+        if (!taskId) reject(new Error('taskId is required'))
+        if (!description) reject(new Error('description is required'))
+        if (!state) reject(new Error('state is required'))
+        if (!issueId) reject(new Error('issueId is required'))
+        const updateQuery = 'UPDATE tasks SET description = \'' + description + '\', state = \'' + state + '\', _issue_id = ' + issueId +
+        ' WHERE _task_id = ' + taskId + ' AND _project_id = ' + projectId
+        database.getDatabase().then(
+            db => db.query(updateQuery, function (err, results) {
+                if (err) {
+                    reject(err.sqlMessage)
+                }
+                resolve(results)
+            })
+        )
+    })
+}
+
 // exports.associateReleaseToSprint = function (releaseId, sprintName) {
 //     //
 // }
