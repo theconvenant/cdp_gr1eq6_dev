@@ -56,14 +56,14 @@ exports.findListProjectsByUser = function (userName) {
     })
 }
 
-// return all infos of the project named projectName
+// return all infos of the project with its id
 /**
- * @param {String} projectName
+ * @param {number} projectId
  */
-exports.findProjectByName = function (projectName) {
+exports.findProjectByName = function (projectId) {
     return new Promise((resolve, reject) => {
-        if (!projectName) reject(new Error('projectName is required'))
-        const projectQuery = 'SELECT * FROM projects WHERE _project_name = \'' + projectName + '\';'
+        if (!projectId) reject(new Error('projectId is required'))
+        const projectQuery = 'SELECT * FROM projects WHERE _project_id = ' + projectId + ';'
         database.getDatabase().then(
             db => db.query(projectQuery, function (err, results) {
                 if (err) {
