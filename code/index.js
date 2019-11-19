@@ -24,7 +24,7 @@ require('./models/projects')(app, databaseInsert, databaseSelect)
 require('./models/register')(app, databaseInsert)
 require('./models/login')(app)
 
-const issues = new (require('./models/issues'))(app)
+const issues = new (require('./models/issues'))(app, databaseSelect, databaseInsert, databaseDelete)
 const projectManagement = new (require('./models/projectManagement'))(app)
 const documentation = new (require('./models/documentation'))(app)
 const releases = new (require('./models/releases'))(app)
@@ -41,17 +41,6 @@ app.post('/',
     authenticate.passport.authenticate('local', { failureRedirect: '/' }),
     function (req, res) {
         res.redirect('/projects')
-    })
-
-app.get('/logout', require('connect-ensure-login').ensureLoggedIn(),
-    function (req, res) {
-        req.logout()
-        res.redirect('/')
-    })
-
-app.get('/login',
-    function (req, res) {
-        res.redirect('/')
     })
 
 app.post('/projectRedirect',
