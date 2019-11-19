@@ -6,7 +6,7 @@ exports.insertUser = function (name, email, password) {
         if (!name) reject(new Error('username is required'))
         if (!email) reject(new Error('email is required'))
         if (!password) reject(new Error('password is required'))
-        const insertQuery = 'INSERT INTO users VALUES ( \'' + name + '\', \'email\', \'' + password + '\');'
+        const insertQuery = 'INSERT INTO users VALUES ( \'' + name + '\', \'' + email + '\', \'' + password + '\');'
         database.getDatabase().then(
             db => db.query(insertQuery, function (err, results) {
                 if (err) {

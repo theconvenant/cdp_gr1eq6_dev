@@ -29,10 +29,6 @@ app.get('/register', function (req, res) {
     res.render('register')
 })
 
-app.post('/register', function (req, res) {
-    res.render('register')
-})
-
 app.get('/summary',
     require('connect-ensure-login').ensureLoggedIn(),
     function (req, res) {
@@ -138,7 +134,7 @@ app.post('/documentation', require('connect-ensure-login').ensureLoggedIn(),
         res.redirect('/documentation')
     })
 
-app.get('/projectManagement', 
+app.get('/projectManagement',
     require('connect-ensure-login').ensureLoggedIn(),
     function (req, res) {
         res.render('projectManagement', { idProject: projectId })
@@ -153,6 +149,12 @@ app.post('/',
     authenticate.passport.authenticate('local', { failureRedirect: '/' }),
     function (req, res) {
         res.redirect('/projects')
+    })
+
+app.post('/register',
+    function (req, res) {
+        databaseInsert.insertUser(req.body.username, req.body.email, req.body.password)
+        res.redirect('/')
     })
 
 app.get('/projects',
