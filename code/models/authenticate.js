@@ -1,8 +1,8 @@
-exports.passport = require('passport')
+const passport = require('passport')
 const Strategy = require('passport-local').Strategy
 const dbSelect = require('../controller/database_select')
 
-this.passport.use(new Strategy(function (username, password, callback) {
+passport.use(new Strategy(function (username, password, callback) {
     dbSelect.findUserByName(username).then(
         user => {
             if (user.password !== password) {
@@ -13,11 +13,11 @@ this.passport.use(new Strategy(function (username, password, callback) {
     ).catch(err => callback(err))
 }))
 
-this.passport.serializeUser(function (user, callback) {
+passport.serializeUser(function (user, callback) {
     callback(null, user.username)
 })
 
-this.passport.deserializeUser(function (username, callback) {
+passport.deserializeUser(function (username, callback) {
     dbSelect.findUserByName(username).then(
         user => {
             return callback(null, user)
@@ -25,6 +25,4 @@ this.passport.deserializeUser(function (username, callback) {
     ).catch(err => callback(err))
 })
 
-exports.SignIn = function (email, username, password) {
-    return false
-}
+exports.passport = passport

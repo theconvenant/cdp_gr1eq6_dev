@@ -15,12 +15,12 @@
         <table class="w3-table-all w3-hoverable w3-card-4">
             <h3 class="w3-margin w3-center">Task List</h3>
             <tr class="w3-blue">
-                <th>Task id</th>
-                <th>Description</th>
-                <th>State</th>
-                <th>Issue id</th>
-                <th> </th>
-                <th> </th>
+                <th style="width:20%">Task id</th>
+                <th style="width:20%">Description</th>
+                <th style="width:20%">State</th>
+                <th style="width:20%">Issue id</th>
+                <th style="width:10%"> </th>
+                <th style="width:10%"> </th>
             </tr>
             <% for (var i = 0; i < taskList.length; ++i) { %>
             <tr class="Projects">
@@ -51,6 +51,11 @@
                                         
                                         <% for (var j = 0; j < issueList.length; ++j) { %>
                                             <input type="checkbox" name="issueId" value="<%=issueList[j]._issue_id %>"> <%=issueList[j]._issue_id %><br>
+                                        <% }; %>
+
+                                        <label>Associated member</label><br>
+                                        <% for (var y = 0; y < memberList.length; ++y) { %>
+                                            <input type="checkbox" name="member" value="<%=memberList[y] %>"> <%=memberList[y] %><br>
                                         <% }; %>
                                         
                                         <input class="w3-btn w3-margin-top w3-ripple w3-green" type="submit" value="Validate">

@@ -28,7 +28,7 @@
                     <td><%= projectsOwner[i].description %></td>
                     <td><%= projectsOwner[i]._owner_name %></td>
                     <th>
-                        <form action="/summary" method="POST">
+                        <form action="/projectRedirect" method="POST">
                             <input class="hideInput" type="text" name="idProject" value=<%= projectsOwner[i]._project_id %>>
                             <input class="w3-btn w3-ripple w3-green" type="submit" value="Enter Project">
                         </form>
@@ -54,7 +54,7 @@
                         <td><%= projectsMember[i].description %></td>
                         <td><%= projectsMember[i]._owner_name %></td>
                         <th>
-                            <form action="/summary" method="POST">
+                            <form action="/projectRedirect" method="POST">
                                 <input class="hideInput" type="text" name="idProject" value=<%= projectsMember[i]._project_id %>>
                                 <input class="w3-btn w3-ripple w3-green" type="submit" value="Enter Project">
                             </form>
