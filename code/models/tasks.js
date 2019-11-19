@@ -8,20 +8,12 @@ module.exports = function (app, databaseInsert, databaseSelect, databaseDelete) 
         function (req, res) {
             databaseSelect.findTasksByProjectId(projectId).then(taskList => {
                 databaseSelect.findListIssuesByProjectID(projectId).then(issueList => {
-                    databaseSelect.findMembersOfProjectID(projectId).then(memberList =>
-                        res.render('tasks', { taskList: taskList, issueList: issueList, idProject: projectId, memberList: memberList })
-                    )
-                })
-            })
-        })
-
-    app.post('/tasks', require('connect-ensure-login').ensureLoggedIn(),
-        function (req, res) {
-            databaseSelect.findTasksByProjectId(projectId).then(taskList => {
-                databaseSelect.findListIssuesByProjectID(projectId).then(issueList => {
-                    databaseSelect.findMembersOfProjectID(projectId).then(memberList =>
-                        res.render('tasks', { taskList: taskList, issueList: issueList, idProject: projectId, memberList: memberList })
-                    )
+                    databaseSelect.findMembersOfProjectID(projectId).then(memberList => {
+                        databaseSelect.findOwnerOfProjectID(projectId).then(ownerName => {
+                            memberList.push(ownerName[0]._owner_name)
+                            res.render('tasks', { taskList: taskList, issueList: issueList, idProject: projectId, memberList: memberList })
+                        })
+                    })
                 })
             })
         })

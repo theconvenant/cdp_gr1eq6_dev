@@ -167,7 +167,10 @@ exports.findMembersOfProjectID = function (projectId) {
     })
 }
 
-exports.findOwnerofProjectID = function (projectId) {
+/**
+ * @param {number} project
+ */
+exports.findOwnerOfProjectID = function (projectId) {
     return new Promise((resolve, reject) => {
         if (!projectId) reject(new Error('projectId is required'))
         const ownerQuery =
