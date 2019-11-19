@@ -60,7 +60,7 @@ exports.findListProjectsByUser = function (userName) {
 /**
  * @param {number} projectId
  */
-exports.findProjectByName = function (projectId) {
+exports.findProjectById = function (projectId) {
     return new Promise((resolve, reject) => {
         if (!projectId) reject(new Error('projectId is required'))
         const projectQuery = 'SELECT * FROM projects WHERE _project_id = ' + projectId + ';'
