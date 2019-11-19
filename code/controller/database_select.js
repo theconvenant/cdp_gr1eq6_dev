@@ -240,3 +240,23 @@ exports.findTasksByProjectId = function (projectId) {
         )
     })
 }
+
+/**
+ * @param {number} projectId
+ * @param {number} taskId
+ */
+exports.findUserOfTask = function (projectId, taskId) {
+    return new Promise((resolve, reject) => {
+        if (!projectId) reject(new Error('projectId is required'))
+        if (!taskId) reject(new Error('taskId is required'))
+        const userQuery = 'SELECT _user_name FROM tasks_users WHERE _task_id = ' + taskId
+        database.getDatabase().then(
+            db => db.query(userQuery, function (err, results) {
+                if (err) {
+                    reject(err.sqlMessage)
+                }
+                resolve(JSON.parse(JSON.stringify(results)))
+            })
+        )
+    })
+}
