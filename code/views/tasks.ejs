@@ -46,13 +46,8 @@
                                         <input class="w3-input w3-border w3-round" type="text" name="state" value="<%=taskList[i].state %>" required>
                 
                                         <label>Issue Id</label>
-                                        <% for (var i = 0; i < issueList.length; ++i) { %>
-                                            <form >
-                                                <input class="w3-input w3-border w3-round" type="checkbox" name="issueId" value="<%=issueList[i]._issue_id %>">
-                                              </form>
-                                        <% }; %>
+                                        <input class="w3-input w3-border w3-round" type="text" name="issueId" value="<%=taskList[i]._issue_id %>" required>
 
-                                        <input class="hideInput" type="text" name="idProject" value=<%= idProject %>>
                 
                                         <input class="w3-btn w3-margin-top w3-ripple w3-green" type="submit" value="Validate">
                                         
@@ -83,7 +78,7 @@
         <div id="addTask" class="w3-modal">
             <div class="w3-modal-content">
                 <div class="w3-container">
-                    <form class="w3-container Task-form" action="/Tasks" method="POST">
+                    <form class="w3-container Task-form" action="/insertTasks" method="POST">
                         <label>Task id</label>
                         <input class="w3-input w3-border w3-round" type="number" name="taskId" placeholder="must be an integer" required>
                             
@@ -95,8 +90,6 @@
 
                         <label>Issue Id</label>
                         <input class="w3-input w3-border w3-round" type="number" name="issueId">
-
-                        <input class="hideInput" type="text" name="idProject" value=<%= idProject %>>
 
                         <input class="w3-btn w3-margin-top w3-ripple w3-green" type="submit" value="Validate">
 

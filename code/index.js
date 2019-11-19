@@ -39,7 +39,7 @@ app.get('/summary',
         res.render('summary', { idProject: req.params.idProject })
     })
 
-app.post('/summary',
+app.post('/summary', require('connect-ensure-login').ensureLoggedIn(),
     function (req, res) {
         projectId = req.body.idProject
         console.log('project wowo ID  = ' + projectId)
@@ -67,29 +67,32 @@ app.post('/tasks', require('connect-ensure-login').ensureLoggedIn(),
         })
     })
 
-app.post('/insertTasks', function (req, res) {
-    if (req.body.issueId === '') {
-        databaseInsert.insertTask(req.body.taskId, req.body.description,
-            req.body.state, projectId)
-            .catch(err => console.log(err))
-    } else {
-        databaseInsert.insertTask(req.body.taskId, req.body.description,
-            req.body.state, projectId, req.body.issueId)
-            .catch(err => console.log(err))
-    }
-    res.redirect('/tasks', { projectId: projectId })
-})
+app.post('/insertTasks', require('connect-ensure-login').ensureLoggedIn(),
+    function (req, res) {
+        if (req.body.issueId === '') {
+            databaseInsert.insertTask(req.body.taskId, req.body.description,
+                req.body.state, projectId)
+                .catch(err => console.log(err))
+        } else {
+            databaseInsert.insertTask(req.body.taskId, req.body.description,
+                req.body.state, projectId, req.body.issueId)
+                .catch(err => console.log(err))
+        }
+        res.redirect('/tasks')
+    })
 
-app.post('/updateTask', function (req, res) {
-    databaseInsert.updateTask(projectId, req.body.taskId, req.body.description,
-        req.body.state, req.body.issueId)
-    res.redirect('/tasks')
-})
+app.post('/updateTask', require('connect-ensure-login').ensureLoggedIn(),
+    function (req, res) {
+        databaseInsert.updateTask(projectId, req.body.taskId, req.body.description,
+            req.body.state, req.body.issueId)
+        res.redirect('/tasks')
+    })
 
-app.post('/deleteTask', function (req, res) {
-    databaseDelete.deleteTask(projectId, req.body.taskId)
-    res.redirect('/tasks')
-})
+app.post('/deleteTask', require('connect-ensure-login').ensureLoggedIn(),
+    function (req, res) {
+        databaseDelete.deleteTask(projectId, req.body.taskId)
+        res.redirect('/tasks')
+    })
 
 app.get('/tests',
     require('connect-ensure-login').ensureLoggedIn(),
@@ -97,7 +100,7 @@ app.get('/tests',
         res.render('tests', { idProject: projectId })
     })
 
-app.post('/tests',
+app.post('/tests', require('connect-ensure-login').ensureLoggedIn(),
     function (req, res) {
         res.redirect('/tests')
     })
@@ -108,7 +111,7 @@ app.get('/sprints',
         res.render('sprints', { idProject: projectId })
     })
 
-app.post('/sprints',
+app.post('/sprints', require('connect-ensure-login').ensureLoggedIn(),
     function (req, res) {
         res.redirect('/sprints')
     })
@@ -119,7 +122,7 @@ app.get('/releases',
         res.render('releases', { idProject: projectId })
     })
 
-app.post('/releases',
+app.post('/releases', require('connect-ensure-login').ensureLoggedIn(),
     function (req, res) {
         res.redirect('/releases')
     })
@@ -130,18 +133,18 @@ app.get('/documentation',
         res.render('documentation', { idProject: projectId })
     })
 
-app.post('/documentation',
+app.post('/documentation', require('connect-ensure-login').ensureLoggedIn(),
     function (req, res) {
         res.redirect('/documentation')
     })
 
-app.get('/projectManagement',
+app.get('/projectManagement', 
     require('connect-ensure-login').ensureLoggedIn(),
     function (req, res) {
         res.render('projectManagement', { idProject: projectId })
     })
 
-app.post('/projectManagement',
+app.post('/projectManagement', require('connect-ensure-login').ensureLoggedIn(),
     function (req, res) {
         res.redirect('/projectManagement')
     })
@@ -162,17 +165,18 @@ app.get('/projects',
         })
     })
 
-app.post('/projects', function (req, res) {
-    console.log(req.body.projectName + req.body.projectName.length)
-    if (req.body.projectName.length !== 0) {
-        if (req.body.description.length === 0) {
-            databaseInsert.insertProject(req.body.projectName, req.user.username)
-        } else {
-            databaseInsert.insertProject(req.body.projectName, req.user.username, req.body.description)
+app.post('/projects', require('connect-ensure-login').ensureLoggedIn(),
+    function (req, res) {
+        console.log(req.body.projectName + req.body.projectName.length)
+        if (req.body.projectName.length !== 0) {
+            if (req.body.description.length === 0) {
+                databaseInsert.insertProject(req.body.projectName, req.user.username)
+            } else {
+                databaseInsert.insertProject(req.body.projectName, req.user.username, req.body.description)
+            }
         }
-    }
-    res.redirect('/projects')
-})
+        res.redirect('/projects')
+    })
 
 app.get('/issues',
     require('connect-ensure-login').ensureLoggedIn(),
@@ -180,12 +184,12 @@ app.get('/issues',
         res.render('issues', { idProject: projectId })
     })
 
-app.post('/issues',
+app.post('/issues', require('connect-ensure-login').ensureLoggedIn(),
     function (req, res) {
         res.render('issues', { idProject: projectId })
     })
 
-app.get('/logout',
+app.get('/logout', require('connect-ensure-login').ensureLoggedIn(),
     function (req, res) {
         req.logout()
         res.redirect('/')
