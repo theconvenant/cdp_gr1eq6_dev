@@ -2,9 +2,10 @@
 <html lang="en">
 
 <head>
-    <!-- pas de header pour cette page-->
-    <link rel='stylesheet' href='css/w3.css'>
-    <link rel='stylesheet' href='css/hideInput.css'>
+    <% include  ./includes/header %>
+    <script type="text/javascript">
+        changeOnglet('tasks')
+    </script>
 </head>
 
 <body>
@@ -18,6 +19,8 @@
                 <th>Description</th>
                 <th>State</th>
                 <th>Issue id</th>
+                <th> </th>
+                <th> </th>
             </tr>
             <% for (var i = 0; i < taskList.length; ++i) { %>
             <tr class="Projects">
@@ -43,7 +46,13 @@
                                         <input class="w3-input w3-border w3-round" type="text" name="state" value="<%=taskList[i].state %>" required>
                 
                                         <label>Issue Id</label>
-                                        <input class="w3-input w3-border w3-round" type="number" name="issueId" value="<%=taskList[i]._issue_id %>">
+                                        <% for (var i = 0; i < issueList.length; ++i) { %>
+                                            <form >
+                                                <input class="w3-input w3-border w3-round" type="checkbox" name="issueId" value="<%=issueList[i]._issue_id %>">
+                                              </form>
+                                        <% }; %>
+
+                                        <input class="hideInput" type="text" name="idProject" value=<%= idProject %>>
                 
                                         <input class="w3-btn w3-margin-top w3-ripple w3-green" type="submit" value="Validate">
                                         
@@ -86,6 +95,8 @@
 
                         <label>Issue Id</label>
                         <input class="w3-input w3-border w3-round" type="number" name="issueId">
+
+                        <input class="hideInput" type="text" name="idProject" value=<%= idProject %>>
 
                         <input class="w3-btn w3-margin-top w3-ripple w3-green" type="submit" value="Validate">
 

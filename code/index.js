@@ -7,6 +7,8 @@ const databaseInsert = require('./controller/database_insert')
 const databaseDelete = require('./controller/database_delete')
 const authenticate = require('./models/authenticate')
 
+var projectId = null
+
 app.use(require('morgan')('combined'))
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(require('express-session')({ secret: 'Secret key', resave: false, saveUninitialized: false }))
@@ -34,49 +36,65 @@ app.post('/register', function (req, res) {
 app.get('/summary',
     require('connect-ensure-login').ensureLoggedIn(),
     function (req, res) {
-        res.render('summary', { idProject: req.body.idProject })
+        res.render('summary', { idProject: req.params.idProject })
     })
 
 app.post('/summary',
     function (req, res) {
-        res.render('summary', { idProject: req.body.idProject })
+        projectId = req.body.idProject
+        console.log('project wowo ID  = ' + projectId)
+        res.render('summary', { idProject: projectId })
     })
 
 app.get('/tasks', require('connect-ensure-login').ensureLoggedIn(),
     function (req, res) {
-        databaseSelect.findTasksByProjectId(4).then(taskList => {
-            res.render('tasks', { taskList: taskList })
+        databaseSelect.findTasksByProjectId(projectId).then(taskList => {
+            databaseSelect.findListIssuesByProjectID(projectId).then(issueList => {
+                res.render('tasks', { taskList: taskList, issueList: issueList, idProject: projectId })
+            }
+            )
         })
     })
 
-app.post('/tasks', function (req, res) {
+app.post('/tasks', require('connect-ensure-login').ensureLoggedIn(),
+    function (req, res) {
+        console.log('project tasks ID  = ' + projectId)
+        databaseSelect.findTasksByProjectId(projectId).then(taskList => {
+            databaseSelect.findListIssuesByProjectID(projectId).then(issueList => {
+                res.render('tasks', { taskList: taskList, issueList: issueList, idProject: projectId })
+            }
+            )
+        })
+    })
+
+app.post('/insertTasks', function (req, res) {
     if (req.body.issueId === '') {
         databaseInsert.insertTask(req.body.taskId, req.body.description,
-            req.body.state, 4)
+            req.body.state, projectId)
             .catch(err => console.log(err))
     } else {
         databaseInsert.insertTask(req.body.taskId, req.body.description,
-            req.body.state, 4, req.body.issueId)
+            req.body.state, projectId, req.body.issueId)
             .catch(err => console.log(err))
     }
-    res.redirect('/tasks')
+    res.redirect('/tasks', { projectId: projectId })
 })
 
 app.post('/updateTask', function (req, res) {
-    databaseInsert.updateTask(4, req.body.taskId, req.body.description,
+    databaseInsert.updateTask(projectId, req.body.taskId, req.body.description,
         req.body.state, req.body.issueId)
     res.redirect('/tasks')
 })
 
 app.post('/deleteTask', function (req, res) {
-    databaseDelete.deleteTask(4, req.body.taskId)
+    databaseDelete.deleteTask(projectId, req.body.taskId)
     res.redirect('/tasks')
 })
 
 app.get('/tests',
     require('connect-ensure-login').ensureLoggedIn(),
     function (req, res) {
-        res.render('tests', { idProject: req.body.idProject })
+        res.render('tests', { idProject: projectId })
     })
 
 app.post('/tests',
@@ -87,7 +105,7 @@ app.post('/tests',
 app.get('/sprints',
     require('connect-ensure-login').ensureLoggedIn(),
     function (req, res) {
-        res.render('sprints', { idProject: req.body.idProject })
+        res.render('sprints', { idProject: projectId })
     })
 
 app.post('/sprints',
@@ -98,7 +116,7 @@ app.post('/sprints',
 app.get('/releases',
     require('connect-ensure-login').ensureLoggedIn(),
     function (req, res) {
-        res.render('releases', { idProject: req.body.idProject })
+        res.render('releases', { idProject: projectId })
     })
 
 app.post('/releases',
@@ -109,7 +127,7 @@ app.post('/releases',
 app.get('/documentation',
     require('connect-ensure-login').ensureLoggedIn(),
     function (req, res) {
-        res.render('documentation', { idProject: req.body.idProject })
+        res.render('documentation', { idProject: projectId })
     })
 
 app.post('/documentation',
@@ -120,7 +138,7 @@ app.post('/documentation',
 app.get('/projectManagement',
     require('connect-ensure-login').ensureLoggedIn(),
     function (req, res) {
-        res.render('projectManagement', { idProject: req.body.idProject })
+        res.render('projectManagement', { idProject: projectId })
     })
 
 app.post('/projectManagement',
@@ -159,12 +177,12 @@ app.post('/projects', function (req, res) {
 app.get('/issues',
     require('connect-ensure-login').ensureLoggedIn(),
     function (req, res) {
-        res.render('issues', { idProject: req.body.idProject })
+        res.render('issues', { idProject: projectId })
     })
 
 app.post('/issues',
     function (req, res) {
-        res.render('issues', { idProject: req.body.idProject })
+        res.render('issues', { idProject: projectId })
     })
 
 app.get('/logout',
