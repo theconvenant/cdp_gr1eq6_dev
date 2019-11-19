@@ -4,16 +4,14 @@ module.exports = function (app) {
     this.setProjectId = function (id) {
         projectId = id
     }
-
-    app.get('/issues',
+    app.get('/releases',
         require('connect-ensure-login').ensureLoggedIn(),
         function (req, res) {
-            res.render('issues', { idProject: projectId })
+            res.render('releases', { idProject: projectId })
         })
 
-    app.post('/issues',
-        require('connect-ensure-login').ensureLoggedIn(),
+    app.post('/releases', require('connect-ensure-login').ensureLoggedIn(),
         function (req, res) {
-            res.render('issues', { idProject: projectId })
+            res.redirect('/releases')
         })
 }
