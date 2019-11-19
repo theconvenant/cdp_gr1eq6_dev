@@ -1,8 +1,10 @@
 var projectId
+var projectName
 
 module.exports = function (app, databaseInsert, databaseSelect, databaseDelete) {
-    this.setProjectId = function (id) {
+    this.setProjectId = function (id, name) {
         projectId = id
+        projectName = name
     }
     app.get('/tasks', require('connect-ensure-login').ensureLoggedIn(),
         function (req, res) {
@@ -11,7 +13,7 @@ module.exports = function (app, databaseInsert, databaseSelect, databaseDelete) 
                     databaseSelect.findMembersOfProjectID(projectId).then(memberList => {
                         databaseSelect.findOwnerOfProjectID(projectId).then(ownerName => {
                             memberList.push(ownerName[0]._owner_name)
-                            res.render('tasks', { taskList: taskList, issueList: issueList, idProject: projectId, memberList: memberList })
+                            res.render('tasks', { taskList: taskList, issueList: issueList, idProject: projectId, memberList: memberList, projectName: projectName })
                         })
                     })
                 })

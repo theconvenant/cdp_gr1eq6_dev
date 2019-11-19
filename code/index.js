@@ -57,15 +57,19 @@ app.get('/login',
 app.post('/projectRedirect',
     require('connect-ensure-login').ensureLoggedIn(),
     function (req, res) {
-        issues.setProjectId(req.body.idProject)
-        projectManagement.setProjectId(req.body.idProject)
-        documentation.setProjectId(req.body.idProject)
-        releases.setProjectId(req.body.idProject)
-        sprints.setProjectId(req.body.idProject)
-        tests.setProjectId(req.body.idProject)
-        tasks.setProjectId(req.body.idProject)
-        summary.setProjectId(req.body.idProject)
-        res.redirect('/summary')
+        const id = req.body.idProject
+        databaseSelect.findProjectById(id).then(function (project) {
+            const name = project[0]._project_name
+            issues.setProjectId(id, name)
+            projectManagement.setProjectId(id, name)
+            documentation.setProjectId(id, name)
+            releases.setProjectId(id, name)
+            sprints.setProjectId(id, name)
+            tests.setProjectId(id, name)
+            tasks.setProjectId(id, name)
+            summary.setProjectId(id, name)
+            res.redirect('/summary')
+        })
     })
 
 app.listen(8080, function () {
