@@ -23,7 +23,7 @@ exports.deleteProject = function (projectName, ownerName) {
  * @param {number} issueId
  * @param {number} projectId
  */
-exports.deleteIssue = function (issueId, projectId) {
+exports.deleteIssue = function (projectId, issueId) {
     return new Promise((resolve, reject) => {
         if (!issueId) reject(new Error('issueId is required'))
         if (!projectId) reject(new Error('projectId is required'))
