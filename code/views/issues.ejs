@@ -35,23 +35,23 @@
 
                     <div class="w3-margin w3-center">
                         <div id="updateIssue<%=issuesList[i]._issue_id %>" class="w3-modal">
-                            <div class="w3-modal-content">
+                            <div class="w3-modal-content w3-animate-bottom">
                                 <div class="w3-container">
                                     <form class="w3-container" action="/updateIssue" method="POST">
                                         <label>User Story number</label>
-                                        <input class="w3-input w3-border w3-round" type="test" name="usNum" value="<%=issuesList[i].us_num %>">
+                                        <input class="w3-input w3-border w3-round" type="test" name="usNum" value="<%=issuesList[i].us_num %>" required>
                                             
                                         <label>Description</label>
-                                        <input class="w3-input w3-border w3-round" type="text" name="description" value="<%=issuesList[i].description %>">
+                                        <input class="w3-input w3-border w3-round" type="text" name="description" value="<%=issuesList[i].description %>" required>
                 
                                         <label>Difficulty</label>
-                                        <input class="w3-input w3-border w3-round" type="number" name="difficulty" value="<%=issuesList[i].difficulty %>">
+                                        <input class="w3-input w3-border w3-round" type="number" name="difficulty" value="<%=issuesList[i].difficulty %>" required>
                 
                                         <label>Priority</label>
-                                        <input class="w3-input w3-border w3-round" type="test" name="priority" value="<%=issuesList[i].priority %>">
+                                        <input class="w3-input w3-border w3-round" type="test" name="priority" value="<%=issuesList[i].priority %>" required>
 
                                         <label>State</label>
-                                        <input class="w3-input w3-border w3-round" type="text" name="state" value="<%=issuesList[i].test_state %>">
+                                        <input class="w3-input w3-border w3-round" type="text" name="state" value="<%=issuesList[i].test_state %>" required>
 
                                         <input class="w3-input w3-border w3-round hideInput" type="number" name="issue_id" value="<%=issuesList[i]._issue_id %>">
                 
@@ -91,13 +91,13 @@
                         <input class="w3-input w3-border w3-round" type="text" name="description" required>
 
                         <label>Difficulty</label>
-                        <input class="w3-input w3-border w3-round" type="number" name="difficulty" placeholder="must be an integer">
+                        <input class="w3-input w3-border w3-round" type="number" name="difficulty" placeholder="must be an integer" required>
 
                         <label>Priority</label>
-                        <input class="w3-input w3-border w3-round" type="text" name="priority">
+                        <input class="w3-input w3-border w3-round" type="text" name="priority" required>
 
                         <label>State</label>
-                        <input class="w3-input w3-border w3-round" type="text" name="state" placeholder="TODO or ...">
+                        <input class="w3-input w3-border w3-round" type="text" name="state" placeholder="TODO or ..." required>
 
                         <input class="w3-btn w3-margin-top w3-ripple w3-green" type="submit" value="Validate">
 
