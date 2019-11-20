@@ -25,7 +25,7 @@ require('./models/register')(app, databaseInsert)
 require('./models/login')(app)
 
 const issues = new (require('./models/issues'))(app, databaseSelect, databaseInsert, databaseDelete)
-const projectManagement = new (require('./models/projectManagement'))(app)
+const projectManagement = new (require('./models/projectManagement'))(app, databaseDelete)
 const documentation = new (require('./models/documentation'))(app)
 const releases = new (require('./models/releases'))(app)
 const sprints = new (require('./models/sprints'))(app)
@@ -50,7 +50,7 @@ app.post('/projectRedirect',
         databaseSelect.findProjectById(id).then(function (project) {
             const name = project[0]._project_name
             issues.setProjectId(id, name)
-            projectManagement.setProjectId(id, name)
+            projectManagement.setProjectId(id, name, project[0]._owner_name)
             documentation.setProjectId(id, name)
             releases.setProjectId(id, name)
             sprints.setProjectId(id, name)
