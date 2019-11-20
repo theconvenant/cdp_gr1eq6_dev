@@ -1,15 +1,17 @@
 var projectId
+var projectName
 
 module.exports = function (app, databaseSelect, databaseInsert, databaseDelete) {
-    this.setProjectId = function (id) {
+    this.setProjectId = function (id, name) {
         projectId = id
+        projectName = name
     }
 
     app.get('/issues',
         require('connect-ensure-login').ensureLoggedIn(),
         function (req, res) {
             databaseSelect.findListIssuesByProjectID(projectId).then(function (issuesList) {
-                res.render('issues', { issuesList: issuesList })
+                res.render('issues', { issuesList: issuesList, projectName: projectName })
             })
         })
 
