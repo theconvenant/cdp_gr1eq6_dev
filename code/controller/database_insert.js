@@ -242,21 +242,21 @@ exports.updateTask = function (projectId, taskId, description, state, issueId = 
  * @param {number} issueId
  * @param {String} description
  * @param {number} difficulty
- * @param {String} prority
+ * @param {String} priority
  * @param {String} usNum
  * @param {String} testState
  */
-exports.updateIssue = function (projectId, issueId, description, difficulty, prority, usNum, testState) {
+exports.updateIssue = function (projectId, issueId, description, difficulty, priority, usNum, testState) {
     return new Promise((resolve, reject) => {
         if (!projectId) reject(new Error('projectId is required'))
         if (!issueId) reject(new Error('issueId is required'))
         if (!description) reject(new Error('description is required'))
         if (!difficulty) reject(new Error('difficulty is required'))
-        if (!prority) reject(new Error('prority is required'))
+        if (!priority) reject(new Error('priority is required'))
         if (!usNum) reject(new Error('usNum is required'))
         if (!testState) reject(new Error('testState is required'))
-        const updateQuery = 'UPDATE issues SET description = \'' + description + '\', difficulty = ' + difficulty + ', prority = \'' + prority +
-        '\', us_num = \'' + usNum + '\', test_state = \'' + testState + ' WHERE _issue_id = ' + issueId + ' AND _project_id = ' + projectId
+        const updateQuery = 'UPDATE issues SET description = \'' + description + '\', difficulty = ' + difficulty + ', priority = \'' + priority +
+        '\', us_num = \'' + usNum + '\', test_state = \'' + testState + '\' WHERE _issue_id = ' + issueId + ' AND _project_id = ' + projectId
         database.getDatabase().then(
             db => db.query(updateQuery, function (err, results) {
                 if (err) {

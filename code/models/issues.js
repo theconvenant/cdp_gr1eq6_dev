@@ -26,7 +26,7 @@ module.exports = function (app, databaseSelect, databaseInsert, databaseDelete) 
     app.post('/updateIssue',
         require('connect-ensure-login').ensureLoggedIn(),
         function (req, res) {
-            databaseInsert.updateIssue(projectId, req.body.issueId, req.body.description, req.body.difficulty, req.body.prority, req.body.usNum, req.body.State)
+            databaseInsert.updateIssue(projectId, req.body.issue_id, req.body.description, req.body.difficulty, req.body.priority, req.body.usNum, req.body.state)
             res.redirect('/issues')
         })
 
