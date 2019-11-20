@@ -61,6 +61,12 @@ app.post('/projectRedirect',
         })
     })
 
+function redirectUnmatched (req, res) {
+    res.redirect('/')
+}
+
+app.use(redirectUnmatched)
+
 app.listen(8080, function () {
     console.log('server listening at port 8080')
 })
