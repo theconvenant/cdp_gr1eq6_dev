@@ -27,13 +27,13 @@ module.exports = function (app, databaseSelect, databaseInsert, databaseDelete) 
         require('connect-ensure-login').ensureLoggedIn(),
         function (req, res) {
             databaseInsert.updateIssue(projectId, req.body.issueId, req.body.description, req.body.difficulty, req.body.prority, req.body.usNum, req.body.State)
-            res.redirect('/tasks')
+            res.redirect('/issues')
         })
 
     app.post('/insertIssue',
         require('connect-ensure-login').ensureLoggedIn(),
         function (req, res) {
-            databaseInsert.insertIssue(req.body.description, req.body.difficulty, req.body.priority, req.body.usNum, req.body.State, projectId)
+            databaseInsert.insertIssue(req.body.description, req.body.difficulty, req.body.priority, req.body.usNum, req.body.state, projectId)
             res.redirect('/issues')
         })
 

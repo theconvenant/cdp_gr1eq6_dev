@@ -119,6 +119,10 @@ exports.insertTaskUser = function (taskId, userName) {
 
 // issueId and difficulty are Integers, the rest are Strings
 // this is why they both are not souronded by ' in the insertQuery String
+/**
+ * @param {String} description
+ * @param {number} taskId
+ */
 exports.insertIssue = function (description, difficulty, priority, usNum, State, projectId) {
     return new Promise((resolve, reject) => {
         if (!description) reject(new Error('description is required'))
@@ -127,7 +131,7 @@ exports.insertIssue = function (description, difficulty, priority, usNum, State,
         if (!usNum) reject(new Error('usNum is required'))
         if (!State) reject(new Error('State is required'))
         if (!projectId) reject(new Error('projectId is required'))
-        const insertQuery = 'INSERT INTO issues VALUES (' + description + '\', ' + difficulty + ', \'' + priority + '\', \'' + usNum + '\', \'' + State + '\', ' + projectId + ');'
+        const insertQuery = 'INSERT INTO issues (description, difficulty, priority, us_num, test_state, _project_id) VALUES (\'' + description + '\', ' + difficulty + ', \'' + priority + '\', \'' + usNum + '\', \'' + State + '\', ' + projectId + ');'
         database.getDatabase().then(
             db => db.query(insertQuery, function (err, results) {
                 if (err) {
