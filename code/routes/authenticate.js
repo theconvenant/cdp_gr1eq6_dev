@@ -1,6 +1,6 @@
 const passport = require('passport')
 const Strategy = require('passport-local').Strategy
-const dbSelect = require('../controller/database_select')
+const dbSelect = require('../db_controller/database_select')
 
 passport.use(new Strategy(function (username, password, callback) {
     dbSelect.findUserByName(username).then(
