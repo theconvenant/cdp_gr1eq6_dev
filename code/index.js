@@ -2,9 +2,11 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const path = require('path')
 const app = express()
-const databaseSelect = require('./db_controller/database_select')
-const databaseInsert = require('./db_controller/database_insert')
-const databaseDelete = require('./db_controller/database_delete')
+// const databaseSelect = require('./db_controller/database_select')
+// const databaseInsert = require('./db_controller/database_insert')
+// const databaseDelete = require('./db_controller/database_delete')
+const projectDb = require('./db_controller/project_db')
+
 const authenticate = require('./routes/authenticate')
 
 app.use(require('morgan')('combined'))
@@ -20,17 +22,17 @@ app.set('views', path.join(__dirname, '.', '/views'))
 app.use(express.static(path.join(__dirname, '.', 'views')))
 
 // import des routes
-require('./routes/projects')(app, databaseInsert, databaseSelect)
-require('./routes/register')(app, databaseInsert)
+require('./routes/projects')(app)
+require('./routes/register')(app)
 require('./routes/login')(app)
 
-const issues = new (require('./routes/issues'))(app, databaseSelect, databaseInsert, databaseDelete)
-const projectManagement = new (require('./routes/projectManagement'))(app, databaseDelete)
+const issues = new (require('./routes/issues'))(app)
+const projectManagement = new (require('./routes/projectManagement'))(app)
 const documentation = new (require('./routes/documentation'))(app)
 const releases = new (require('./routes/releases'))(app)
 const sprints = new (require('./routes/sprints'))(app)
 const tests = new (require('./routes/tests'))(app)
-const tasks = new (require('./routes/tasks'))(app, databaseInsert, databaseSelect, databaseDelete)
+const tasks = new (require('./routes/tasks'))(app)
 const summary = new (require('./routes/summary'))(app)
 
 app.get('/', function (req, res) {
@@ -47,7 +49,7 @@ app.post('/projectRedirect',
     require('connect-ensure-login').ensureLoggedIn(),
     function (req, res) {
         const id = req.body.idProject
-        databaseSelect.findProjectById(id).then(function (project) {
+        projectDb.findProjectById(id).then(function (project) {
             const name = project[0]._project_name
             issues.setProjectId(id, name)
             projectManagement.setProjectId(id, name, project[0]._owner_name)

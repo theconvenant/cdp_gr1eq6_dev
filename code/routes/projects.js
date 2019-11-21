@@ -1,9 +1,11 @@
-module.exports = function (app, databaseInsert, databaseSelect) {
+const projectDb = require('../db_controller/project_db')
+
+module.exports = function (app) {
     app.get('/projects',
         require('connect-ensure-login').ensureLoggedIn(),
         function (req, res) {
-            databaseSelect.findListProjectsByOwnerName(req.user.username).then(function (projectsOwner) {
-                databaseSelect.findListProjectsByUser(req.user.username).then(function (projectsMember) {
+            projectDb.findListProjectsByOwnerName(req.user.username).then(function (projectsOwner) {
+                projectDb.findListProjectsByUser(req.user.username).then(function (projectsMember) {
                     res.render('projects', { projectsOwner: projectsOwner, projectsMember: projectsMember })
                 })
             })
@@ -14,9 +16,9 @@ module.exports = function (app, databaseInsert, databaseSelect) {
             console.log(req.body.projectName + req.body.projectName.length)
             if (req.body.projectName.length !== 0) {
                 if (req.body.description.length === 0) {
-                    databaseInsert.insertProject(req.body.projectName, req.user.username)
+                    projectDb.insertProject(req.body.projectName, req.user.username)
                 } else {
-                    databaseInsert.insertProject(req.body.projectName, req.user.username, req.body.description)
+                    projectDb.insertProject(req.body.projectName, req.user.username, req.body.description)
                 }
             }
             res.redirect('/projects')
