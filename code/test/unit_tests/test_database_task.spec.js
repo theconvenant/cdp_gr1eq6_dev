@@ -7,7 +7,6 @@ const state = 'State'
 const projectId = -1
 const issueId = 0
 
-
 describe('Test insertTask', function () {
     database.insertTask(taskId, description, state, projectId, issueId).then(function () {
         database.findTasksByProjectId(projectId).then(function (task) {

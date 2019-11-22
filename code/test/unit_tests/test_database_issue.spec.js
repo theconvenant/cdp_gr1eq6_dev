@@ -2,14 +2,14 @@ const database = require('../../db_controller/issue_db')
 
 var assert = require('assert')
 const description = 'Description'
-const difficulty = 0
+const difficulty = 1
 const priority = 'Priority'
 const usNum = 'UsNum'
 const state = 'State'
 const projectId = -1
 
 describe('Test insertIssue', function () {
-    database.insertIssue(description, difficulty, priority, usNum, State, projectId).then(function () {
+    database.insertIssue(description, difficulty, priority, usNum, state, projectId).then(function () {
         database.findListIssuesByProjectID(projectId).then(function (issue) {
             it('should return the issue\'s description', function () {
                 assert.equal(description, issue.description)
