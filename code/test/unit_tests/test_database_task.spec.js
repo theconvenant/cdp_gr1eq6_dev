@@ -1,11 +1,11 @@
 const database = require('../../db_controller/task_db')
 
 var assert = require('assert')
-const taskId = 0
+const taskId = 1
 const description = 'Description'
 const state = 'State'
 const projectId = -1
-const issueId = 0
+const issueId = 1
 
 describe('Test insertTask', function () {
     database.insertTask(taskId, description, state, projectId, issueId).then(function () {

@@ -4,7 +4,7 @@
   "description": "projet saf-scrum",
   "main": "index.js",
   "scripts": {
-    "test": "mocha --exit"
+    "test": "mocha test/unit_tests/*"
   },
   "author": "GOURGUE Antoine, LAJOINIE Florian, GRIFFAULT Simon",
   "license": "ISC",
