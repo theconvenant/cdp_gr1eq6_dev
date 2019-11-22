@@ -1,11 +1,13 @@
-module.exports = function (app, databaseInsert) {
+const userDb = require('../db_controller/user_db')
+
+module.exports = function (app) {
     app.get('/register', function (req, res) {
         res.render('register')
     })
 
     app.post('/register',
         function (req, res) {
-            databaseInsert.insertUser(req.body.username, req.body.email, req.body.password)
+            userDb.insertUser(req.body.username, req.body.email, req.body.password)
             res.redirect('/')
         })
 }

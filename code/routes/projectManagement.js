@@ -1,8 +1,10 @@
+const projectManagement = require('../db_controller/project_db')
+
 var projectId
 var projectName
 var ownerName
 
-module.exports = function (app, databaseDelete) {
+module.exports = function (app) {
     this.setProjectId = function (id, name, owner) {
         projectId = id
         projectName = name
@@ -17,7 +19,7 @@ module.exports = function (app, databaseDelete) {
     app.post('/deleteProject',
         require('connect-ensure-login').ensureLoggedIn(),
         function (req, res) {
-            databaseDelete.deleteProject(projectName, ownerName).catch(err => console.log(err))
+            projectManagement.deleteProject(projectName, ownerName).catch(err => console.log(err))
             res.redirect('/projects')
         })
 }

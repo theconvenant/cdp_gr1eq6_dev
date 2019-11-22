@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Serveur: localhost
--- Généré le : Ven 15 Novembre 2019 à 13:00
+-- Généré le : Mar 19 Novembre 2019 à 18:10
 -- Version du serveur: 5.0.75
 -- Version de PHP: 5.2.6-3ubuntu4.6
 
@@ -24,7 +24,12 @@ CREATE TABLE IF NOT EXISTS `documentation` (
   `filepath` text collate utf8_unicode_ci NOT NULL,
   `_project_id` int(11) NOT NULL,
   PRIMARY KEY  (`_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Contenu de la table `documentation`
+--
+
 
 -- --------------------------------------------------------
 
@@ -33,7 +38,7 @@ CREATE TABLE IF NOT EXISTS `documentation` (
 --
 
 CREATE TABLE IF NOT EXISTS `issues` (
-  `_issue_id` int(11) NOT NULL,
+  `_issue_id` int(11) NOT NULL AUTO_INCREMENT,
   `description` text collate utf8_unicode_ci NOT NULL,
   `difficulty` int(11) NOT NULL,
   `priority` text collate utf8_unicode_ci NOT NULL,
@@ -41,7 +46,11 @@ CREATE TABLE IF NOT EXISTS `issues` (
   `test_state` text collate utf8_unicode_ci NOT NULL,
   `_project_id` int(11) NOT NULL,
   PRIMARY KEY  (`_issue_id`,`_project_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Contenu de la table `issues`
+--
 
 -- --------------------------------------------------------
 
@@ -54,10 +63,14 @@ CREATE TABLE IF NOT EXISTS `projects` (
   `_project_name` varchar(50) collate utf8_unicode_ci NOT NULL,
   `_owner_name` varchar(30) collate utf8_unicode_ci NOT NULL,
   `description` text collate utf8_unicode_ci,
-  PRIMARY KEY  (`_project_name`,`_owner_name`),
-  FOREIGN KEY (_project_id)
-    REFERENCES users(username)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=4 ;
+  UNIQUE KEY `_project_id` (`_project_id`),
+  KEY `_owner_name` (`_owner_name`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1;
+
+--
+-- Contenu de la table `projects`
+--
+
 
 -- --------------------------------------------------------
 
@@ -69,7 +82,12 @@ CREATE TABLE IF NOT EXISTS `projects_users` (
   `_user_name` varchar(50) collate utf8_unicode_ci NOT NULL,
   `_project_id` int(11) NOT NULL,
   PRIMARY KEY  (`_user_name`,`_project_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Contenu de la table `projects_users`
+--
+
 
 -- --------------------------------------------------------
 
@@ -85,7 +103,12 @@ CREATE TABLE IF NOT EXISTS `releases` (
   `description` text collate utf8_unicode_ci NOT NULL,
   `_project_id` int(11) NOT NULL,
   PRIMARY KEY  (`_id`,`_project_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+
+--
+-- Contenu de la table `releases`
+--
+
 
 -- --------------------------------------------------------
 
@@ -97,7 +120,12 @@ CREATE TABLE IF NOT EXISTS `releases_issues` (
   `_issue_id` int(11) NOT NULL,
   `_release_id` int(11) NOT NULL,
   PRIMARY KEY  (`_issue_id`,`_release_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Contenu de la table `releases_issues`
+--
+
 
 -- --------------------------------------------------------
 
@@ -106,13 +134,18 @@ CREATE TABLE IF NOT EXISTS `releases_issues` (
 --
 
 CREATE TABLE IF NOT EXISTS `sprints` (
-  `_id` INT NOT NULL,
+  `_id` int(11) NOT NULL,
   `starting_date` date NOT NULL,
   `ending_date` date NOT NULL,
   `description` text collate utf8_unicode_ci,
   `_project_id` int(11) NOT NULL,
   PRIMARY KEY  (`_id`,`_project_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Contenu de la table `sprints`
+--
+
 
 -- --------------------------------------------------------
 
@@ -124,7 +157,12 @@ CREATE TABLE IF NOT EXISTS `sprints_issues` (
   `_issue_id` int(11) NOT NULL,
   `_sprint_id` int(11) NOT NULL,
   PRIMARY KEY  (`_issue_id`,`_sprint_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Contenu de la table `sprints_issues`
+--
+
 
 -- --------------------------------------------------------
 
@@ -136,7 +174,12 @@ CREATE TABLE IF NOT EXISTS `sprints_releases` (
   `_sprint_id` int(11) NOT NULL,
   `_release_id` int(11) NOT NULL,
   PRIMARY KEY  (`_sprint_id`,`_release_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Contenu de la table `sprints_releases`
+--
+
 
 -- --------------------------------------------------------
 
@@ -151,7 +194,11 @@ CREATE TABLE IF NOT EXISTS `tasks` (
   `_issue_id` int(11) default NULL,
   `_project_id` int(11) NOT NULL,
   PRIMARY KEY  (`_task_id`,`_project_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Contenu de la table `tasks`
+--
 
 -- --------------------------------------------------------
 
@@ -163,7 +210,12 @@ CREATE TABLE IF NOT EXISTS `tasks_tasks` (
   `_task_id` int(11) NOT NULL,
   `_dependency_task_id` int(11) NOT NULL,
   PRIMARY KEY  (`_task_id`,`_dependency_task_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Contenu de la table `tasks_tasks`
+--
+
 
 -- --------------------------------------------------------
 
@@ -175,7 +227,12 @@ CREATE TABLE IF NOT EXISTS `tasks_users` (
   `_task_id` int(11) NOT NULL,
   `_user_name` varchar(50) collate utf8_unicode_ci NOT NULL,
   PRIMARY KEY  (`_task_id`,`_user_name`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Contenu de la table `tasks_users`
+--
+
 
 -- --------------------------------------------------------
 
@@ -191,7 +248,12 @@ CREATE TABLE IF NOT EXISTS `tests` (
   `_issue_id` int(11) NOT NULL,
   `_project_id` int(11) NOT NULL,
   PRIMARY KEY  (`_id`,`_project_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=1 ;
+
+--
+-- Contenu de la table `tests`
+--
+
 
 -- --------------------------------------------------------
 
@@ -204,5 +266,17 @@ CREATE TABLE IF NOT EXISTS `users` (
   `email` text collate utf8_unicode_ci,
   `password` text collate utf8_unicode_ci,
   PRIMARY KEY  (`username`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+--
+-- Contenu de la table `users`
+--
+--
+-- Contraintes pour les tables exportées
+--
+
+--
+-- Contraintes pour la table `projects`
+--
+ALTER TABLE `projects`
+  ADD CONSTRAINT `projects_ibfk_1` FOREIGN KEY (`_owner_name`) REFERENCES `users` (`username`) ON DELETE CASCADE ON UPDATE CASCADE;

@@ -1,9 +1,9 @@
 const passport = require('passport')
 const Strategy = require('passport-local').Strategy
-const dbSelect = require('../db_controller/database_select')
+const userDb = require('../db_controller/user_db')
 
 passport.use(new Strategy(function (username, password, callback) {
-    dbSelect.findUserByName(username).then(
+    userDb.findUserByName(username).then(
         user => {
             if (user !== undefined) {
                 if (user.password !== password) {
@@ -20,7 +20,7 @@ passport.serializeUser(function (user, callback) {
 })
 
 passport.deserializeUser(function (username, callback) {
-    dbSelect.findUserByName(username).then(
+    userDb.findUserByName(username).then(
         user => {
             return callback(null, user)
         }

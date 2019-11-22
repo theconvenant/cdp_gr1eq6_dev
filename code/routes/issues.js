@@ -1,7 +1,9 @@
+const issueDb = require('../db_controller/issue_db')
+
 var projectId
 var projectName
 
-module.exports = function (app, databaseSelect, databaseInsert, databaseDelete) {
+module.exports = function (app) {
     this.setProjectId = function (id, name) {
         projectId = id
         projectName = name
@@ -10,7 +12,7 @@ module.exports = function (app, databaseSelect, databaseInsert, databaseDelete) 
     app.get('/issues',
         require('connect-ensure-login').ensureLoggedIn(),
         function (req, res) {
-            databaseSelect.findListIssuesByProjectID(projectId).then(function (issuesList) {
+            issueDb.findListIssuesByProjectID(projectId).then(function (issuesList) {
                 res.render('issues', { issuesList: issuesList, projectName: projectName })
             })
         })
@@ -18,7 +20,7 @@ module.exports = function (app, databaseSelect, databaseInsert, databaseDelete) 
     app.post('/issues',
         require('connect-ensure-login').ensureLoggedIn(),
         function (req, res) {
-            databaseSelect.findListIssuesByProjectID(projectId).then(function (issuesList) {
+            issueDb.findListIssuesByProjectID(projectId).then(function (issuesList) {
                 res.render('issues', { issuesList: issuesList })
             })
         })
@@ -26,21 +28,21 @@ module.exports = function (app, databaseSelect, databaseInsert, databaseDelete) 
     app.post('/updateIssue',
         require('connect-ensure-login').ensureLoggedIn(),
         function (req, res) {
-            databaseInsert.updateIssue(projectId, req.body.issue_id, req.body.description, req.body.difficulty, req.body.priority, req.body.usNum, req.body.state)
+            issueDb.updateIssue(projectId, req.body.issue_id, req.body.description, req.body.difficulty, req.body.priority, req.body.usNum, req.body.state)
             res.redirect('/issues')
         })
 
     app.post('/insertIssue',
         require('connect-ensure-login').ensureLoggedIn(),
         function (req, res) {
-            databaseInsert.insertIssue(req.body.description, req.body.difficulty, req.body.priority, req.body.usNum, req.body.state, projectId)
+            issueDb.insertIssue(req.body.description, req.body.difficulty, req.body.priority, req.body.usNum, req.body.state, projectId)
             res.redirect('/issues')
         })
 
     app.post('/deleteIssue',
         require('connect-ensure-login').ensureLoggedIn(),
         function (req, res) {
-            databaseDelete.deleteIssue(projectId, req.body.issueId)
+            issueDb.deleteIssue(projectId, req.body.issueId)
             res.redirect('/issues')
         })
 }
