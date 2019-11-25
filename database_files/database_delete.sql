@@ -10,6 +10,7 @@ DROP TABLE IF EXISTS sprints_releases;
 DROP TABLE IF EXISTS sprints_issues;
 DROP TABLE IF EXISTS tasks;
 DROP TABLE IF EXISTS tasks_tasks;
+DROP TABLE IF EXISTS tasks_issues;
 DROP TABLE IF EXISTS tasks_users;
 DROP TABLE IF EXISTS tests;
 DROP TABLE IF EXISTS users

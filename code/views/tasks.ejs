@@ -18,7 +18,6 @@
                 <th style="width:20%">Task id</th>
                 <th style="width:20%">Description</th>
                 <th style="width:20%">State</th>
-                <th style="width:20%">Issue id</th>
                 <th style="width:10%"> </th>
                 <th style="width:10%"> </th>
             </tr>
@@ -27,7 +26,6 @@
                 <td><%= taskList[i]._task_id %></td>
                 <td><%= taskList[i].description %></td>
                 <td><%= taskList[i].state %></td>
-                <td><%= taskList[i]._issue_id %> </td>
                 <th><button onclick="document.getElementById('updateTask<%=taskList[i]._task_id %>').style.display='block'"
                     class="w3-btn w3-ripple w3-green">Modify</button></th>
 
@@ -43,14 +41,26 @@
                                         <input class="w3-input w3-border w3-round" type="text" name="description" value='<%=taskList[i].description %>' >
                 
                                         <label>State</label><br>
-                                            <input type="radio" name="state" value="TODO" checked> TODO<br>
-                                            <input type="radio" name="state" value="DOING"> DOING<br>
-                                            <input type="radio" name="state" value="DONE"> DONE<br>
+                                            <input type="radio" name="state" value="TODO" <% if (taskList[i].state === "TODO") { %> checked <% } %>> TODO<br>
+                                            <input type="radio" name="state" value="DOING" <% if (taskList[i].state === "DOING") { %> checked <% } %>> DOING<br>
+                                            <input type="radio" name="state" value="DONE" <% if (taskList[i].state === "DONE") { %> checked <% } %>> DONE<br>
                 
-                                        <label>Related Issues id</label><br>                                        
-                                        <% for (var j = 0; j < issueList.length; ++j) { %>
-                                            <input type="checkbox" name="issueId" value="<%=issueList[j]._issue_id %>"> <%=issueList[j]._issue_id %><br>
-                                        <% }; %>
+
+                                        <label>Related Issues</label><br>                        
+                                            <%  var it = issueTasksMap.entries()
+                                                var next = it.next()
+                                                while (!next.done) {
+                                                    var issueInTask = "false"
+                                                    var usNum = next.value[0]
+                                                    var taskL = next.value[1]
+                                                    taskL.forEach(function(taskId) { %>
+                                                        <% if (taskId === taskList[i]._task_id) { 
+                                                            issueInTask = "true" 
+                                                        }
+                                                    })
+                                                    var next = it.next() %>
+                                                    <input type="checkbox" name="usList" value="<%=usNum %>" <% if (issueInTask === "true") { %> checked <% } %>> <%= usNum %><br>
+                                            <% }; %>
 
                                         <label>Dependency task id</label><br>
                                         <% for (var x = 0; x < taskList.length; ++x) { 
@@ -104,12 +114,11 @@
                             <input type="radio" name="state" value="TODO" checked> TODO<br>
                             <input type="radio" name="state" value="DOING"> DOING<br>
                             <input type="radio" name="state" value="DONE"> DONE<br>
-                
-                                       
-                        <label>Issue Id</label><br>                        
-                        <% for (var j = 0; j < issueList.length; ++j) { %>
-                            <input type="checkbox" name="issueId" value="<%=issueList[j]._issue_id %>"> <%=issueList[j]._issue_id %><br>
-                        <% }; %>
+
+                            <label>Related Issues</label><br>                                        
+                            <% for (var j = 0; j < issueList.length; ++j) { %>
+                                <input type="checkbox" name="usList" value="<%=issueList[j].us_num %>"> <%=issueList[j].us_num %><br>
+                            <% }; %>
 
                         <label>Dependency task id</label><br>
                             <% for (var x = 0; x < taskList.length; ++x) { %>

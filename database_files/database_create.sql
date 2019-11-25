@@ -191,13 +191,28 @@ CREATE TABLE IF NOT EXISTS `tasks` (
   `_task_id` int(11) NOT NULL,
   `description` text collate utf8_unicode_ci NOT NULL,
   `state` text collate utf8_unicode_ci NOT NULL,
-  `_issue_id` int(11) default NULL,
   `_project_id` int(11) NOT NULL,
   PRIMARY KEY  (`_task_id`,`_project_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Contenu de la table `tasks`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `tasks_issues`
+--
+
+CREATE TABLE IF NOT EXISTS `tasks_issues` (
+  `_task_id` int(11) NOT NULL,
+  `_issue_id` int(11) NOT NULL,
+  PRIMARY KEY  (`_task_id`,`_issue_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Contenu de la table `task_issues`
 --
 
 -- --------------------------------------------------------
@@ -276,7 +291,13 @@ CREATE TABLE IF NOT EXISTS `users` (
 --
 
 --
--- Contraintes pour la table `projects`
+-- Contraintes
 --
 ALTER TABLE `projects`
   ADD CONSTRAINT `projects_ibfk_1` FOREIGN KEY (`_owner_name`) REFERENCES `users` (`username`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE `tasks_issues`
+  ADD CONSTRAINT `tasks_issues_for_task` FOREIGN KEY (`_task_id`) REFERENCES `tasks` (`_task_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE `tasks_issues`
+  ADD CONSTRAINT `tasks_issues_for_issue` FOREIGN KEY (`_issue_id`) REFERENCES `issues` (`_issue_id`) ON DELETE CASCADE ON UPDATE CASCADE;

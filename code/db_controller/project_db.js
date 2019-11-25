@@ -163,8 +163,8 @@ exports.deleteProject = function (projectName, ownerName) {
  */
 exports.removeMemberFromProject = function (projectId, userName) {
     return new Promise((resolve, reject) => {
-        if (!projectId) reject(new Error('issueId is required'))
-        if (!userName) reject(new Error('projectName is required'))
+        if (!projectId) reject(new Error('projectId is required'))
+        if (!userName) reject(new Error('userName is required'))
         const deleteQuery = 'DELETE FROM projects_users WHERE _project_id = ' + projectId + ' AND _user_name = \'' + userName + '\';'
         database.getDatabase().then(
             db => db.query(deleteQuery, function (err, results) {

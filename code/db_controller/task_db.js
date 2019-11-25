@@ -36,18 +36,14 @@ exports.findUserOfTask = function (projectId, taskId) {
     })
 }
 
-// if issueId exist, I have to add to it ' before and after for the SQL command line
-exports.insertTask = function (taskId, description, state, projectId, issueId = null) {
+exports.insertTask = function (taskId, description, state, projectId) {
     return new Promise((resolve, reject) => {
         if (!taskId) reject(new Error('taskId is required'))
         if (!description) reject(new Error('description is required'))
         if (!state) reject(new Error('state is required'))
         if (!projectId) reject(new Error('projectId is required'))
-        if (issueId) {
-            issueId = '\'' + issueId + '\''
-        }
         const insertQuery = 'INSERT INTO tasks VALUES ( \'' + taskId + '\', \'' +
-        description + '\', \'' + state + '\', ' + issueId + ', ' + projectId + ');'
+        description + '\', \'' + state + '\', ' + projectId + ');'
         database.getDatabase().then(
             db => db.query(insertQuery, function (err, results) {
                 if (err) {
@@ -81,6 +77,88 @@ exports.insertTaskTask = function (taskId, dependencyTaskId) {
 
 /**
  * @param {number} taskId
+ * @param {number} issueId an issue on which the task depends on
+ */
+exports.insertTaskIssue = function (taskId, issueId) {
+    return new Promise((resolve, reject) => {
+        if (!taskId) reject(new Error('taskId is required'))
+        if (!issueId) reject(new Error('issueId is required'))
+        const insertQuery = 'INSERT INTO tasks_issues VALUES  (' + taskId + ', ' + issueId + ');'
+        database.getDatabase().then(
+            db => db.query(insertQuery, function (err, results) {
+                if (err) {
+                    reject(err.sqlMessage)
+                }
+                resolve(results)
+            })
+        )
+    })
+}
+
+/**
+ * @param {number} taskId
+ * @param {number} issueId an issue on which the task depends on
+ */
+exports.removeTaskIssue = function (taskId, issueId) {
+    return new Promise((resolve, reject) => {
+        if (!taskId) reject(new Error('taskId is required'))
+        if (!issueId) reject(new Error('issueId is required'))
+        const deleteQuery = 'DELETE FROM tasks_issues WHERE _task_id = ' + taskId + ' AND _issue_id = ' + issueId + ';'
+        database.getDatabase().then(
+            db => db.query(deleteQuery, function (err, results) {
+                if (err) {
+                    reject(err.sqlMessage)
+                }
+                resolve(results)
+            })
+        )
+    })
+}
+
+/**
+ * @param {number} taskId
+ * @param {number} projectId
+ */
+exports.findIssueListOftask = function (taskId, projectId) {
+    return new Promise((resolve, reject) => {
+        if (!taskId) reject(new Error('taskId is required'))
+        if (!projectId) reject(new Error('projectId is required'))
+        const findQuery = 'SELECT * FROM issues WHERE _project_id = ' + projectId + ' AND _issue_id IN (' +
+        'SELECT _issue_id FROM tasks_issues WHERE _task_id = ' + taskId + ')'
+        database.getDatabase().then(
+            db => db.query(findQuery, function (err, results) {
+                if (err) {
+                    reject(err.sqlMessage)
+                }
+                resolve(JSON.parse(JSON.stringify(results)))
+            })
+        )
+    })
+}
+
+/**
+ * @param {number} issueId
+ * @param {number} projectId
+ */
+exports.findTaskListOfIssue = function (issueId, projectId) {
+    return new Promise((resolve, reject) => {
+        if (!issueId) reject(new Error('issueId is required'))
+        if (!projectId) reject(new Error('projectId is required'))
+        const findQuery = 'SELECT * FROM tasks WHERE _project_id = ' + projectId + ' AND _task_id IN (' +
+        'SELECT _task_id FROM tasks_issues WHERE _issue_id = ' + issueId + ')'
+        database.getDatabase().then(
+            db => db.query(findQuery, function (err, results) {
+                if (err) {
+                    reject(err.sqlMessage)
+                }
+                resolve(JSON.parse(JSON.stringify(results)))
+            })
+        )
+    })
+}
+
+/**
+ * @param {number} taskId
  * @param {String} userName
  */
 exports.insertTaskUser = function (taskId, userName) {
@@ -104,15 +182,14 @@ exports.insertTaskUser = function (taskId, userName) {
  * @param {number} taskId
  * @param {String} description
  * @param {String} state
- * @param {number} issueId
  */
-exports.updateTask = function (projectId, taskId, description, state, issueId = null) {
+exports.updateTask = function (projectId, taskId, description, state) {
     return new Promise((resolve, reject) => {
         if (!projectId) reject(new Error('projectId is required'))
         if (!taskId) reject(new Error('taskId is required'))
         if (!description) reject(new Error('description is required'))
         if (!state) reject(new Error('state is required'))
-        const updateQuery = 'UPDATE tasks SET description = \'' + description + '\', state = \'' + state + '\', _issue_id = ' + issueId +
+        const updateQuery = 'UPDATE tasks SET description = \'' + description + '\', state = \'' + state + '\'' +
         ' WHERE _task_id = ' + taskId + ' AND _project_id = ' + projectId
         database.getDatabase().then(
             db => db.query(updateQuery, function (err, results) {

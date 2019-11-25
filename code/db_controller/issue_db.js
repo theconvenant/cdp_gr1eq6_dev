@@ -19,6 +19,44 @@ exports.findListIssuesByProjectID = function (projectId) {
 }
 
 /**
+ * @param {number} issueId
+ */
+exports.getUsNumOfIssue = function (issueId) {
+    return new Promise((resolve, reject) => {
+        if (!issueId) reject(new Error('issueId is required'))
+        const getQuery = 'SELECT us_num FROM issues WHERE _issue_id = ' + issueId + ' ;'
+        database.getDatabase().then(
+            db => db.query(getQuery, function (err, results) {
+                if (err) {
+                    reject(err.sqlMessage)
+                }
+                resolve(JSON.parse(JSON.stringify(results)))
+            })
+        )
+    })
+}
+
+/**
+ * @param {String} usNum
+ * @param {number} projectId
+ */
+exports.getIssueByUsNum = function (usNum, projectId) {
+    return new Promise((resolve, reject) => {
+        if (!usNum) reject(new Error('usNum is required'))
+        if (!projectId) reject(new Error('projectId is required'))
+        const getQuery = 'SELECT * FROM issues WHERE us_num = \'' + usNum + '\' AND _project_id = ' + projectId + ';'
+        database.getDatabase().then(
+            db => db.query(getQuery, function (err, results) {
+                if (err) {
+                    reject(err.sqlMessage)
+                }
+                resolve(JSON.parse(JSON.stringify(results)))
+            })
+        )
+    })
+}
+
+/**
  * @param {number} sprintId
  */
 exports.findIssuesInSprint = function (sprintId) {
@@ -74,7 +112,6 @@ exports.deleteIssue = function (projectId, issueId) {
     })
 }
 
-
 // issueId and difficulty are Integers, the rest are Strings
 // this is why they both are not souronded by ' in the insertQuery String
 /**
@@ -89,7 +126,8 @@ exports.insertIssue = function (description, difficulty, priority, usNum, State,
         if (!usNum) reject(new Error('usNum is required'))
         if (!State) reject(new Error('State is required'))
         if (!projectId) reject(new Error('projectId is required'))
-        const insertQuery = 'INSERT INTO issues (description, difficulty, priority, us_num, test_state, _project_id) VALUES (\'' + description + '\', ' + difficulty + ', \'' + priority + '\', \'' + usNum + '\', \'' + State + '\', ' + projectId + ');'
+        const insertQuery = 'INSERT INTO issues (description, difficulty, priority, us_num, test_state, _project_id) VALUES (\'' +
+        description + '\', ' + difficulty + ', \'' + priority + '\', \'' + usNum + '\', \'' + State + '\', ' + projectId + ');'
         database.getDatabase().then(
             db => db.query(insertQuery, function (err, results) {
                 if (err) {
