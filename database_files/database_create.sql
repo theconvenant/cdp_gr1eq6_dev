@@ -301,3 +301,9 @@ ALTER TABLE `tasks_issues`
 
 ALTER TABLE `tasks_issues`
   ADD CONSTRAINT `tasks_issues_for_issue` FOREIGN KEY (`_issue_id`) REFERENCES `issues` (`_issue_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE `tasks_tasks`
+   ADD CONSTRAINT `tasks_tasks_for_task` FOREIGN KEY (`_task_id`) REFERENCES `tasks` (`_task_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE `tasks_tasks`
+   ADD CONSTRAINT `tasks_tasks_for_dependencyTask` FOREIGN KEY (`_dependency_task_id`) REFERENCES `tasks` (`_task_id`) ON DELETE CASCADE ON UPDATE CASCADE;
