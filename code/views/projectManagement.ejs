@@ -10,9 +10,66 @@
             
 <body >
 
-    <form action="/deleteProject" method="POST">
-        <input class="w3-btn w3-display-middle w3-padding w3-margin w3-ripple w3-red" type="submit" value="Delete Project">
-    </form>
+    <div class="w3-container">
+        <h2>Project Owner</h2>
+        <p>Say high to your boss</p>
+        <ul class="w3-ul w3-card-4">
+            
+            <li class="w3-bar">
+            <span onclick="this.parentElement.style.display='none'" class="w3-button w3-white w3-border w3-border-red w3-round-large w3-right"> You can't remove the boss</span>
+            <div class="w3-bar-item">
+                <span class="w3-large"> <%= ownerName %> </span><br>
+                <span>Web Developer</span>
+            </div>
+            </li>
+        </ul>
+        <h2>Project Member list</h2>
+        <p>The list of your lovely partners</p>
+        <ul class="w3-ul w3-card-4">
+            <% for (var i = 0; i < memberList.length; ++i) { %>
+            <li class="w3-bar">
 
+            <form action="/removeUserFromProject" method = "post">
+                <button type="submit" value='<%=memberList[i]._user_name %>'
+                    name="memberName" class="w3-bar-item w3-button w3-white w3-xlarge w3-right">Remove</button>    
+            </form>
+
+            <div class="w3-bar-item">
+                <span class="w3-large"> <%= memberList[i]._user_name %></span><br>
+                <span>Web Developer</span>
+            </div>
+            </li>
+            <% }; %>
+        </ul>
+    </div>
+
+    <div class="w3-margin w3-center">
+
+            <button onclick="document.getElementById('addUserProject').style.display='block'"
+            class="w3-btn w3-ripple w3-green">+ Add member</button>
+
+            <div id="addUserProject" class="w3-modal">
+                <div class="w3-modal-content">
+                    <div class="w3-container">
+                        <form class="w3-container project-form" action="/addUserToProject" method="POST">
+
+                            <label>User name</label>
+                            <input class="w3-input w3-border w3-round" type="text" name="userName" required>
+                            
+                            <input class="w3-btn w3-margin-top w3-ripple w3-green" type="submit" value="Validate">
+                            <button onclick="document.getElementById('addUserProject').style.display='none'"
+                        class="w3-btn w3-ripple w3-margin-top w3-red">Cancel</span>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    <div class="w3-margin w3-center">
+        <form action="/deleteProject" method="POST">
+            <input class="w3-btn w3-ripple w3-red" type="submit" value="Delete Project">
+        </form>
+    </div>
 </body>
 </html>

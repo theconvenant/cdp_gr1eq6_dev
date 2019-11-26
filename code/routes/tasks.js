@@ -18,13 +18,17 @@ module.exports = function (app) {
             taskDb.findTasksByProjectId(projectId).then(taskList => {
                 issueDb.findListIssuesByProjectID(projectId).then(issueList => {
                     projectDb.findMembersOfProjectID(projectId).then(memberList => {
+                        var userNameList = []
+                        memberList.forEach(member => {
+                            userNameList.push(member._user_name)
+                        })
                         projectDb.findOwnerOfProjectID(projectId).then(ownerName => {
-                            memberList.push(ownerName[0]._owner_name)
+                            userNameList.push(ownerName[0]._owner_name)
                             res.render('tasks', {
                                 taskList: taskList,
                                 issueList: issueList,
                                 idProject: projectId,
-                                memberList: memberList,
+                                userNameList: userNameList,
                                 projectName: projectName,
                                 issueTasksMap: issueTasksMap,
                                 taskTasksMap: taskTasksMap
@@ -45,6 +49,9 @@ module.exports = function (app) {
                     if (req.body.taskIdList) {
                         insertTaskListOftask(req.body.taskId, req.body.taskIdList)
                     }
+                    if (req.body.member) {
+                        taskDb.insertTaskUser(req.body.taskId, req.body.member)
+                    }
                     res.redirect('/tasks')
                 }
             )
@@ -57,6 +64,11 @@ module.exports = function (app) {
                 () => {
                     updateIssueListOfTask(req.body.taskId, req.body.usList)
                     updateDependecyTaskListOfTask(req.body.taskId, req.body.taskIdList)
+                    if (req.body.member) {
+                        console.log(req.body.taskId)
+                        taskDb.removeUserOfTask(req.body.taskId, projectId).then(
+                            () => taskDb.insertTaskUser(req.body.taskId, req.body.member))
+                    }
                     res.redirect('/tasks')
                 })
         })

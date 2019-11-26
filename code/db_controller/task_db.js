@@ -240,6 +240,27 @@ exports.insertTaskUser = function (taskId, userName) {
 }
 
 /**
+ * @param {number} taskId
+ * @param {number} projectId
+ */
+exports.removeUserOfTask = function (taskId, projectId) {
+    return new Promise((resolve, reject) => {
+        if (!taskId) reject(new Error('taskId is required'))
+        if (!projectId) reject(new Error('projectId is required'))
+        const removeQuery = 'DELETE FROM tasks_users WHERE _task_id IN (SELECT _task_id FROM tasks WHERE _task_id = ' +
+        taskId + ' AND _project_id = ' + projectId + ');'
+        database.getDatabase().then(
+            db => db.query(removeQuery, function (err, results) {
+                if (err) {
+                    reject(err.sqlMessage)
+                }
+                resolve(results)
+            })
+        )
+    })
+}
+
+/**
  * @param {number} projectId
  * @param {number} taskId
  * @param {String} description

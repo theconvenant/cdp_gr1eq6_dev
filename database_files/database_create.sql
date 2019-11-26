@@ -61,7 +61,7 @@ CREATE TABLE IF NOT EXISTS `issues` (
 CREATE TABLE IF NOT EXISTS `projects` (
   `_project_id` int(11) NOT NULL auto_increment,
   `_project_name` varchar(50) collate utf8_unicode_ci NOT NULL,
-  `_owner_name` varchar(30) collate utf8_unicode_ci NOT NULL,
+  `_owner_name` varchar(50) collate utf8_unicode_ci NOT NULL,
   `description` text collate utf8_unicode_ci,
   UNIQUE KEY `_project_id` (`_project_id`),
   KEY `_owner_name` (`_owner_name`)
@@ -277,7 +277,7 @@ CREATE TABLE IF NOT EXISTS `tests` (
 --
 
 CREATE TABLE IF NOT EXISTS `users` (
-  `username` varchar(30) collate utf8_unicode_ci NOT NULL,
+  `username` varchar(50) collate utf8_unicode_ci NOT NULL,
   `email` text collate utf8_unicode_ci,
   `password` text collate utf8_unicode_ci,
   PRIMARY KEY  (`username`)
@@ -307,3 +307,27 @@ ALTER TABLE `tasks_tasks`
 
 ALTER TABLE `tasks_tasks`
    ADD CONSTRAINT `tasks_tasks_for_dependencyTask` FOREIGN KEY (`_dependency_task_id`) REFERENCES `tasks` (`_task_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE `tasks`
+   ADD CONSTRAINT `task_project` FOREIGN KEY (`_project_id`) REFERENCES `projects` (`_project_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- ALTER TABLE `tests`
+--    ADD CONSTRAINT `test_project` FOREIGN KEY (`_project_id`) REFERENCES `tests` (`_project_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE `issues`
+   ADD CONSTRAINT `issues_project` FOREIGN KEY (`_project_id`) REFERENCES `projects` (`_project_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE `sprints`
+   ADD CONSTRAINT `sprint_project` FOREIGN KEY (`_project_id`) REFERENCES `projects` (`_project_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE `releases`
+   ADD CONSTRAINT `releases_project` FOREIGN KEY (`_project_id`) REFERENCES `projects` (`_project_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE `documentation`
+   ADD CONSTRAINT `documentation_project` FOREIGN KEY (`_project_id`) REFERENCES `projects` (`_project_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE `tasks_users`
+   ADD CONSTRAINT `tasks_users` FOREIGN KEY (`_user_name`) REFERENCES `users` (`username`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE `projects_users`
+   ADD CONSTRAINT `add_user_project` FOREIGN KEY (`_user_name`) REFERENCES `users` (`username`) ON DELETE CASCADE ON UPDATE CASCADE;
