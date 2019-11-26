@@ -1,26 +1,18 @@
-const database = require('../../db_controller/user_db')
+const dbUser = require('../../db_controller/user_db')
 
 var assert = require('assert')
-const testName = 'testName'
-const testEmail = 'email@test.com'
-const testPassword = 'testPassword'
+const userName = 'userName'
+const email = 'email@test.com'
+const password = 'password'
 
 describe('Test insertUser', function () {
-    database.insertUser(testName, testEmail, testPassword).then(function () {
-        database.findUserByName(testName).then(function (user) {
-            it('should return the user\'s name', function () {
-                assert.equal(testName, user.username)
-            })
-            it('should return the user\'s name', function () {
-                assert.equal(testEmail, user.email)
-            })
-            it('should return the user\'s name', function () {
-                assert.equal(testPassword, user.password)
-            })
-            database.deleteAccount(testName).then(function () {
-                database.findUserByName(testName).then(function (deleteUser) {
-                    assert.equal(deleteUser, undefined)
-                })
+    it('create_user', function () {
+        dbUser.insertUser(userName, email, password).then(function () {
+            dbUser.findUserByName(userName).then(function (user) {
+                assert.equal(userName, user[0].description)
+                assert.equal(email, user[0].difficulty)
+                assert.equal(password, user[0].priority)
+                dbUser.deleteAccount(userName)
             })
         })
     })
