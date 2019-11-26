@@ -64,7 +64,7 @@ app.post('/projectRedirect',
     })
 
 function redirectUnmatched (req, res) {
-    res.redirect('/')
+    res.redirect('/projects')
 }
 
 app.use(redirectUnmatched)
