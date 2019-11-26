@@ -77,6 +77,68 @@ exports.insertTaskTask = function (taskId, dependencyTaskId) {
 
 /**
  * @param {number} taskId
+ * @param {number} projectId
+ */
+exports.findDependecyTaskList = function (taskId, projectId) {
+    return new Promise((resolve, reject) => {
+        if (!taskId) reject(new Error('taskId is required'))
+        if (!projectId) reject(new Error('projectId is required'))
+        const findQuery = 'SELECT * FROM tasks WHERE _project_id = ' + projectId + ' AND _task_id IN (' +
+        'SELECT _dependency_task_id FROM tasks_tasks WHERE _task_id = ' + taskId + ')'
+        database.getDatabase().then(
+            db => db.query(findQuery, function (err, results) {
+                if (err) {
+                    reject(err.sqlMessage)
+                }
+                resolve(JSON.parse(JSON.stringify(results)))
+            })
+        )
+    })
+}
+
+/**
+ * @param {number} depTaskId
+ * @param {number} projectId
+ */
+exports.findTaskListOfDepencyTask = function (depTaskId, projectId) {
+    return new Promise((resolve, reject) => {
+        if (!depTaskId) reject(new Error('depTaskId is required'))
+        if (!projectId) reject(new Error('projectId is required'))
+        const findQuery = 'SELECT * FROM tasks WHERE _project_id = ' + projectId + ' AND _task_id IN (' +
+        'SELECT _task_id FROM tasks_tasks WHERE _dependency_task_id = ' + depTaskId + ')'
+        database.getDatabase().then(
+            db => db.query(findQuery, function (err, results) {
+                if (err) {
+                    reject(err.sqlMessage)
+                }
+                resolve(JSON.parse(JSON.stringify(results)))
+            })
+        )
+    })
+}
+
+/**
+ * @param {number} taskId
+ * @param {number} dependencyTaskId an task on which the task depends on
+ */
+exports.removeTaskTask = function (taskId, dependencyTaskId) {
+    return new Promise((resolve, reject) => {
+        if (!taskId) reject(new Error('taskId is required'))
+        if (!dependencyTaskId) reject(new Error('dependencyTaskId is required'))
+        const deleteQuery = 'DELETE FROM tasks_tasks WHERE _task_id = ' + taskId + ' AND _dependency_task_id = ' + dependencyTaskId + ';'
+        database.getDatabase().then(
+            db => db.query(deleteQuery, function (err, results) {
+                if (err) {
+                    reject(err.sqlMessage)
+                }
+                resolve(results)
+            })
+        )
+    })
+}
+
+/**
+ * @param {number} taskId
  * @param {number} issueId an issue on which the task depends on
  */
 exports.insertTaskIssue = function (taskId, issueId) {
