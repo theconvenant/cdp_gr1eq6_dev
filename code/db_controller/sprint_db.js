@@ -21,6 +21,24 @@ exports.findSprintByName = function (sprintId, projectId) {
 }
 
 /**
+ * @param {number} projectId
+ */
+exports.findSprintsByProjectId = function (projectId) {
+    return new Promise((resolve, reject) => {
+        if (!projectId) reject(new Error('projectId is required'))
+        const sprintQuery = 'SELECT * FROM sprints WHERE _project_id = ' + projectId + ';'
+        database.getDatabase().then(
+            db => db.query(sprintQuery, function (err, results) {
+                if (err) {
+                    reject(err.sqlMessage)
+                }
+                resolve(JSON.parse(JSON.stringify(results)))
+            })
+        )
+    })
+}
+
+/**
  * @param {number} issueId
  * @param {number} sprintId
  */
