@@ -5,7 +5,10 @@ module.exports = function (app) {
         require('connect-ensure-login').ensureLoggedIn(),
         function (req, res) {
             projectDb.findListProjectsByOwnerName(req.user.username).then(function (projectsOwner) {
+                console.log(projectsOwner)
                 projectDb.findListProjectsByUser(req.user.username).then(function (projectsMember) {
+                    console.log('member')
+                    console.log(projectsMember)
                     res.render('projects', { projectsOwner: projectsOwner, projectsMember: projectsMember })
                 })
             })

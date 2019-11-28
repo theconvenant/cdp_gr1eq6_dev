@@ -140,6 +140,11 @@
                                 <input type="checkbox" name="taskIdList" value="<%=taskList[x]._task_id %>"> <%=taskList[x]._task_id %><br>
                             <% }; %>
 
+                            <label>Associated member</label><br>
+                            <% for (var y = 0; y < userNameList.length; ++y) { %>
+                                <input type="checkbox" name="member" value="<%=userNameList[y]%>"> <%=userNameList[y] %><br>
+                            <% }; %>
+
                         <input class="w3-btn w3-margin-top w3-ripple w3-green" type="submit" value="Validate">
 
                         <button onclick="document.getElementById('addTask').style.display='none'"

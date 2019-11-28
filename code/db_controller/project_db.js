@@ -24,7 +24,7 @@ exports.findListProjectsByOwnerName = function (ownerName) {
 exports.findListProjectsByUser = function (userName) {
     return new Promise((resolve, reject) => {
         if (!userName) reject(new Error('userName is required'))
-        const findProjectName = 'SELECT * FROM projects WHERE _project_name IN (SELECT _project_name FROM projects_users WHERE _user_name = \'' + userName + '\');'
+        const findProjectName = 'SELECT * FROM projects WHERE _project_id IN (SELECT _project_id FROM projects_users WHERE _user_name = \'' + userName + '\');'
         database.getDatabase().then(
             db => db.query(findProjectName, function (err, results) {
                 if (err) {
