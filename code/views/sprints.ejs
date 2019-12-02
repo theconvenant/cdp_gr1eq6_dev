@@ -10,6 +10,47 @@
             
 <body >
 
+        <div class="w3-container w3-content">
+            <% if (sprintList.length != 0) { %>
+            <p class="w3-opacity"><b>Sprints</b></p> 
+            <% }; for (var i = 0; i < sprintList.length; ++i) { %>
+            <div class="w3-panel w3-white w3-card w3-display-container">
+                <p class="w3-text-green"><b><%= sprintList[i].name%></b></p>
+                <p><%= sprintList[i].description%></p>
+                <p class="w3-text-green"><%= moment(sprintList[i].starting_date).format('DD/MM/YYYY');%> to <%= moment(sprintList[i].ending_date).format('DD/MM/YYYY')%></p>
+            </div>
+            <% };%>
+        </div>
+
+    <div class="w3-margin w3-center">
+
+        <button onclick="document.getElementById('addSprint').style.display='block'"
+        class="w3-btn w3-ripple w3-green">+ Add Sprint</button>
+
+        <div id="addSprint" class="w3-modal">
+            <div class="w3-modal-content">
+                <div class="w3-container">
+                    <form class="w3-container project-form" action="/insertSprint" method="POST">
+                        <label>Sprint name</label>
+                        <input class="w3-input w3-border w3-round" type="text" name="sprintName" required>
+                            
+                        <label>Description</label>
+                        <input class="w3-input w3-border w3-round" type="text" name="description">
+
+                        <label>Starting date</label>
+                        <input class="w3-input w3-border w3-round" type="date" name="startDate" required>
+
+                        <label>Ending date</label>
+                        <input class="w3-input w3-border w3-round" type="date" name="endDate" required>
+            
+                        <input class="w3-btn w3-margin-top w3-ripple w3-green" type="submit" value="Validate">
+                        <button onclick="document.getElementById('addSprint').style.display='none'"
+                    class="w3-btn w3-ripple w3-margin-top w3-red">Cancel</span>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 
 
 </body>
