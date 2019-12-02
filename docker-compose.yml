@@ -1,0 +1,21 @@
+version: '3'
+services:
+  db:
+    build: ./database_files
+    ports:
+    - 3306:3306
+    volumes:
+     - my-db:/app/db
+
+  saf-scrum:
+    build: ./code
+    ports:
+     - "8080:8080"
+    depends_on:
+     - db
+    environment:
+     - DATABASE_HOST=db
+    restart: always
+
+volumes:
+  my-db:

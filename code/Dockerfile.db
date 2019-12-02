@@ -1,2 +1,0 @@
-FROM mysql:8.0.2
-COPY ../database_files/database_create.sql docker-entrypoint-initdb.d/database_create.sql

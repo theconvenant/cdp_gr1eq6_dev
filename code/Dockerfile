@@ -1,7 +1,13 @@
-FROM node:10
+FROM node:slim
 
-COPY package.json .
+WORKDIR /app
 
-RUN npm install
+COPY ./package.json /app/package.json
 
-CMD ["node", "index.js"]
+RUN cd /app && npm install
+
+COPY . /app
+
+CMD node /app/index.js
+
+EXPOSE 8080
