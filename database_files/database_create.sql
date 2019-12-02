@@ -135,6 +135,7 @@ CREATE TABLE IF NOT EXISTS `releases_issues` (
 
 CREATE TABLE IF NOT EXISTS `sprints` (
   `_id` int(11) NOT NULL,
+  `name` varchar(50) collate utf8_unicode_ci NOT NULL,
   `starting_date` date NOT NULL,
   `ending_date` date NOT NULL,
   `description` text collate utf8_unicode_ci,

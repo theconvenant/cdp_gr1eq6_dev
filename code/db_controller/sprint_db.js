@@ -74,7 +74,7 @@ exports.insertSprint = function (name, startDate, endDate, projectId, descriptio
         if (description) {
             description = '\'' + description + '\''
         }
-        const insertQuery = 'INSERT INTO sprints VALUES ( \'' + name + '\', \'' + startDate + '\', \'' + endDate + '\', ' + description + ', ' + projectId + ');'
+        const insertQuery = 'INSERT INTO sprints (name, starting_date, ending_date, description, _project_id) VALUES ( \'' + name + '\', \'' + startDate + '\', \'' + endDate + '\', ' + description + ', ' + projectId + ');'
         database.getDatabase().then(
             db => db.query(insertQuery, function (err, results) {
                 if (err) {
