@@ -5,22 +5,79 @@
     <% include  ./includes/header %>
     <script type="text/javascript">
         changeOnglet('sprints')
+        function openIssue(issueName) {
+            var i;
+            var x = document.getElementsByClassName("issues");
+            for (i = 0; i < x.length; i++) {
+                x[i].style.display = "none";  
+            }
+            document.getElementById(issueName).style.display = "block";  
+        }
     </script>
 </head>
             
-<body >
-
-        <div class="w3-container w3-content">
-            <% if (sprintList.length != 0) { %>
-            <p class="w3-opacity"><b>Sprints</b></p> 
-            <% }; for (var i = 0; i < sprintList.length; ++i) { %>
+<body> 
+    <% if (current_sprint) { %>
+    <div id="tasksList" class="w3-panel w3-white w3-card w3-display-container">
+        <h2 class="w3-text-green w3-center""><%=current_sprint.name%></h2>
+        <div class="w3-margin w3-center">
+            <div class="w3-bar w3-lime">
+                <% for (var i = 0; i < issuesInSprint.length; ++i) { %>
+                <button class="w3-bar-item w3-button" onclick="openIssue('<%=issuesInSprint[i]._issue_id%>')"><%=issuesInSprint[i].us_num%></button>
+                <% }; %>
+            </div>
+            <% for (var i = 0; i < issuesInSprint.length; ++i) { %>
+            <div id="<%=issuesInSprint[i]._issue_id%>" class="issues" style="display:none">
+            <h2><%=issuesInSprint[i].us_num%></h2>
+            <p><%=issuesInSprint[i].description%></p>
+            </div>
+            <% }; %>
+        </div>
+        <div class="w3-margin w3-center">
+            <button onclick="document.getElementById('addIssueToSprint').style.display='block'"
+            class="w3-btn w3-ripple w3-green">+ Add Issue to sprint</button>
+    
+            <div id="addIssueToSprint" class="w3-modal">
+                <div class="w3-modal-content w3-animate-bottom">
+                    <div class="w3-container">
+                        <form class="w3-container" action="/addIssueToSprint" method="POST">
+                            
+                            <label>Related Issues</label><br>                                        
+                            <% for (var j = 0; j < issuesList.length; ++j) { %>
+                                <input type="checkbox" name="usList" value="<%=issuesList[j].us_num %>"> <%=issuesList[j].us_num %><br>
+                            <% }; %>
+    
+                            <input class="w3-btn w3-margin-top w3-ripple w3-green" type="submit" value="Validate">
+    
+                            <button onclick="document.getElementById('addIssueToSprint').style.display='none'"
+                        class="w3-btn w3-ripple w3-margin-top w3-red">Cancel</span>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <% };%>
+    <div class="w3-container w3-content">
+        <% if (sprintList.length != 0) { %>
+        <p class="w3-opacity"><b>Sprints</b></p> 
+        <% }; for (var i = 0; i < sprintList.length; ++i) { %>
             <div class="w3-panel w3-white w3-card w3-display-container">
                 <p class="w3-text-green"><b><%= sprintList[i].name%></b></p>
                 <p><%= sprintList[i].description%></p>
-                <p class="w3-text-green"><%= moment(sprintList[i].starting_date).format('DD/MM/YYYY');%> to <%= moment(sprintList[i].ending_date).format('DD/MM/YYYY')%></p>
+                <p class="w3-text-green"><%= moment(sprintList[i].starting_date).format('DD/MM/YYYY');%> to 
+                    <%= moment(sprintList[i].ending_date).format('DD/MM/YYYY')%></p>
+                <form class="w3-container" action="/chooseSprint" method="POST">
+                    <button type="submit" value=<%=sprintList[i]._id%>
+                            name="current_sprint" class="w3-btn w3-ripple w3-green w3-margin-bottom">Details</button>
+                </form>
+                <form action="/deleteSprint" method = "POST" onsubmit="return confirm('Are you sure you want to delete this sprint ?')">
+                    <button type="submit" value='<%=sprintList[i]._id %>'
+                        name="sprintId" class="w3-btn w3-ripple w3-red w3-display-bottomright w3-margin">Remove</button>    
+                </form>
             </div>
-            <% };%>
-        </div>
+        <% };%>
+    </div>
 
     <div class="w3-margin w3-center">
 
@@ -28,7 +85,7 @@
         class="w3-btn w3-ripple w3-green">+ Add Sprint</button>
 
         <div id="addSprint" class="w3-modal">
-            <div class="w3-modal-content">
+            <div class="w3-modal-content w3-animate-bottom">
                 <div class="w3-container">
                     <form class="w3-container project-form" action="/insertSprint" method="POST">
                         <label>Sprint name</label>
