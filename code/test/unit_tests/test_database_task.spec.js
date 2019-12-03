@@ -109,8 +109,39 @@ describe('Tasks test', function () {
 
     it('insert unknown dependency task', async function () {
         await taskDb.insertTaskTask(taskTest._task_id, 132).then(async function () {
-            assert.strictEqual(true, false, 'a task can not depends on a unknown one')
-            taskDb.deleteTask(projectId, 132)
+            taskDb.removeTaskTask(taskTest._task_id, 132)
+            assert.strictEqual(true, false, 'a task can not depend on a unknown one')
+        }, err => assert.strictEqual(true, true, err))
+    })
+
+    it('insert dependency issue', async function () {
+        const issueDesc = 'dependency_desc'
+        const issueState = 'dependency_state'
+        const issueDiff = 1
+        const issuePrio = 'high'
+        const usNum = 'us_test'
+        await issueDb.insertIssue(issueDesc, issueDiff, issuePrio, usNum, issueState, projectId).then(async function () {
+            await issueDb.getIssueByUsNum(usNum, projectId).then(async function (issue) {
+                await taskDb.insertTaskIssue(taskTest._task_id, issue[0]._issue_id).then(async function () {
+                    await taskDb.findIssueListOftask(taskTest._task_id, projectId).then(issueList => {
+                        const depIssue = issueList[0]
+                        assert.strictEqual(depIssue._issue_id, issue[0]._issue_id)
+                        assert.strictEqual(depIssue.description, issueDesc)
+                        assert.strictEqual(depIssue.test_state, issueState)
+                        assert.strictEqual(depIssue.us_num, usNum)
+                        assert.strictEqual(depIssue.difficulty, issueDiff)
+                        assert.strictEqual(depIssue.priority, issuePrio)
+                        issueDb.deleteIssue(projectId, depIssue._issue_id)
+                    }, () => taskDb.deleteTask(projectId, issue[0]._issue_id))
+                }, () => taskDb.deleteTask(projectId, issue[0]._issue_id))
+            })
+        })
+    })
+
+    it('insert unknown dependency issue', async function () {
+        await taskDb.insertTaskIssue(taskTest._task_id, -1).then(async function () {
+            taskDb.removeTaskIssue(taskTest._task_id, -1)
+            assert.strictEqual(true, false, 'a task can not depend on a unknown issue')
         }, err => assert.strictEqual(true, true, err))
     })
 })

@@ -112,11 +112,13 @@ exports.deleteIssue = function (projectId, issueId) {
     })
 }
 
-// issueId and difficulty are Integers, the rest are Strings
-// this is why they both are not souronded by ' in the insertQuery String
 /**
  * @param {String} description
- * @param {number} taskId
+ * @param {number} difficulty
+ * @param {String} priority
+ * @param {String} usNum
+ * @param {String} testState
+ * @param {number} projectId
  */
 exports.insertIssue = function (description, difficulty, priority, usNum, State, projectId) {
     return new Promise((resolve, reject) => {
