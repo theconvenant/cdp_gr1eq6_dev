@@ -132,7 +132,7 @@ describe('Tasks test', function () {
                         assert.strictEqual(depIssue.difficulty, issueDiff)
                         assert.strictEqual(depIssue.priority, issuePrio)
                         issueDb.deleteIssue(projectId, depIssue._issue_id)
-                    })
+                    }, () => taskDb.deleteTask(projectId, issue[0]._issue_id))
                 }, () => taskDb.deleteTask(projectId, issue[0]._issue_id))
             })
         })
