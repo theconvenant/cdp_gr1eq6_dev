@@ -21,10 +21,10 @@ exports.findListIssuesByProjectID = function (projectId) {
 /**
  * @param {number} issueId
  */
-exports.getUsNumOfIssue = function (issueId) {
+exports.getIssuebyId = function (issueId) {
     return new Promise((resolve, reject) => {
         if (!issueId) reject(new Error('issueId is required'))
-        const getQuery = 'SELECT us_num FROM issues WHERE _issue_id = ' + issueId + ' ;'
+        const getQuery = 'SELECT * FROM issues WHERE _issue_id = ' + issueId + ' ;'
         database.getDatabase().then(
             db => db.query(getQuery, function (err, results) {
                 if (err) {

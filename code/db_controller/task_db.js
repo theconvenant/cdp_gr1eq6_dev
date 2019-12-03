@@ -36,13 +36,39 @@ exports.findUserOfTask = function (projectId, taskId) {
     })
 }
 
+/**
+ * @param {number} projectId
+ * @param {number} taskId
+ */
+exports.getTaskById = function (projectId, taskId) {
+    return new Promise((resolve, reject) => {
+        if (!projectId) reject(new Error('projectId is required'))
+        if (!taskId) reject(new Error('taskId is required'))
+        const userQuery = 'SELECT * FROM tasks WHERE _task_id = ' + taskId + ' AND _project_id = ' + projectId
+        database.getDatabase().then(
+            db => db.query(userQuery, function (err, results) {
+                if (err) {
+                    reject(err.sqlMessage)
+                }
+                resolve(JSON.parse(JSON.stringify(results)))
+            })
+        )
+    })
+}
+
+/**
+ * @param {number} taskId
+ * @param {string} description
+ * @param {string} state
+ * @param {number} projectId
+ */
 exports.insertTask = function (taskId, description, state, projectId) {
     return new Promise((resolve, reject) => {
         if (!taskId) reject(new Error('taskId is required'))
         if (!description) reject(new Error('description is required'))
         if (!state) reject(new Error('state is required'))
         if (!projectId) reject(new Error('projectId is required'))
-        const insertQuery = 'INSERT INTO tasks VALUES ( \'' + taskId + '\', \'' +
+        const insertQuery = 'INSERT INTO tasks VALUES ( ' + taskId + ', \'' +
         description + '\', \'' + state + '\', ' + projectId + ');'
         database.getDatabase().then(
             db => db.query(insertQuery, function (err, results) {
@@ -76,6 +102,7 @@ exports.insertTaskTask = function (taskId, dependencyTaskId) {
 }
 
 /**
+ * returns the list of tasks that the task in paramter depends on
  * @param {number} taskId
  * @param {number} projectId
  */
