@@ -1,21 +1,27 @@
 version: '3'
 services:
-  db:
-    build: ./database_files
-    ports:
-    - 3306:3306
-    volumes:
-     - my-db:/app/db
 
   saf-scrum:
     build: ./code
     ports:
      - "8080:8080"
     depends_on:
-     - db
+     - mysql
+    container_name: saf-container
     environment:
-     - DATABASE_HOST=db
+     - DATABASE_HOST=mysql
     restart: always
+    networks: 
+      - safscrum
 
-volumes:
-  my-db:
+  mysql:
+    build: ./database_files
+    ports:
+    - 3306:3306
+    container_name: mysql
+    networks: 
+      - safscrum
+
+networks: 
+  safscrum:
+    driver: bridge

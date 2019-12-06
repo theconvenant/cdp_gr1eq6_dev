@@ -1,10 +1,11 @@
 var mysql = require('mysql')
 
 const database = mysql.createConnection({
-    host: 'dbserver.emi.u-bordeaux.fr',
+    host: 'mysql',
     user: 'agourgue',
     password: 'cdp2019',
-    database: 'agourgue'
+    database: 'agourgue',
+    ports:'3306'
 })
 
 exports.getDatabase = function () {
