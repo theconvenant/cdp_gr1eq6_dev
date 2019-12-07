@@ -6,6 +6,7 @@ const app = express()
 // const databaseInsert = require('./db_controller/database_insert')
 // const databaseDelete = require('./db_controller/database_delete')
 const projectDb = require('./db_controller/project_db')
+const userDb = require('./db_controller/user_db')
 
 const authenticate = require('./routes/authenticate')
 
@@ -35,6 +36,8 @@ const tests = new (require('./routes/tests'))(app)
 const tasks = new (require('./routes/tasks'))(app)
 const summary = new (require('./routes/summary'))(app)
 
+var userName = ''
+
 app.get('/', function (req, res) {
     res.render('index')
 })
@@ -42,6 +45,7 @@ app.get('/', function (req, res) {
 app.post('/',
     authenticate.passport.authenticate('local', { failureRedirect: '/' }),
     function (req, res) {
+        userName = req.body.username
         res.redirect('/projects')
     })
 
@@ -61,6 +65,13 @@ app.post('/projectRedirect',
             summary.setProjectId(id, name)
             res.redirect('/summary')
         })
+    })
+
+app.get('/deleteAccount',
+    function (req, res) {
+        req.logOut()
+        userDb.deleteAccount(userName)
+        res.redirect('/')
     })
 
 function redirectUnmatched (req, res) {
