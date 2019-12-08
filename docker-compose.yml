@@ -7,21 +7,7 @@ services:
      - "8080:8080"
     depends_on:
      - mysql
-    container_name: saf-container
-    environment:
-     - DATABASE_HOST=mysql
     restart: always
-    networks: 
-      - safscrum
 
   mysql:
     build: ./database_files
-    ports:
-    - 3306:3306
-    container_name: mysql
-    networks: 
-      - safscrum
-
-networks: 
-  safscrum:
-    driver: bridge
