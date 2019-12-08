@@ -41,7 +41,7 @@ exports.insertUser = function (name, email, password) {
 }
 exports.deleteAccount = function (userName) {
     return new Promise((resolve, reject) => {
-        if (!userName) reject(new Error('projectName is required'))
+        if (!userName) reject(new Error('userName is required'))
         const deleteQuery = 'DELETE FROM users WHERE username = \'' + userName + '\';'
         database.getDatabase().then(
             db => db.query(deleteQuery, function (err, results) {
