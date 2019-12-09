@@ -1,6 +1,7 @@
 const dbIssue = require('../../db_controller/issue_db')
 const dbUser = require('../../db_controller/user_db')
 const dbProject = require('../../db_controller/project_db')
+const dbInit = require('../../db_controller/database_header')
 
 var assert = require('assert')
 const description = 'Description'
@@ -27,6 +28,7 @@ describe('Test Issue', function () {
     var issueTest
 
     before(async function () {
+        dbInit.databaseTestConnection()
         const email = 'email@test.com'
         const password = 'password'
         const projectName = 'projectName'

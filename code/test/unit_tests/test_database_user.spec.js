@@ -1,8 +1,10 @@
 const dbUser = require('../../db_controller/user_db')
+const dbInit = require('../../db_controller/database_header')
 
 var assert = require('assert')
 
 describe('Test user', function () {
+    dbInit.databaseTestConnection()
     const userName = 'userName'
     const email = 'email@test.com'
     const password = 'password'

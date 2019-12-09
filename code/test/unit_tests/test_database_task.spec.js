@@ -2,6 +2,7 @@ const taskDb = require('../../db_controller/task_db')
 const projectDb = require('../../db_controller/project_db')
 const userDb = require('../../db_controller/user_db')
 const issueDb = require('../../db_controller/issue_db')
+const dbInit = require('../../db_controller/database_header')
 
 var assert = require('assert')
 
@@ -13,6 +14,7 @@ describe('Tasks test', function () {
     var taskTest
 
     before(async function () {
+        dbInit.databaseTestConnection()
         const ownerName = 'test_bob'
         await userDb.insertUser(ownerName, 'mail', 'pass').then(async function () {
             await projectDb.insertProject('projet_test', ownerName).then(async function () {

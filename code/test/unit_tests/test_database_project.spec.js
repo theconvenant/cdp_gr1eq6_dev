@@ -1,5 +1,6 @@
 const dbProject = require('../../db_controller/project_db')
 const dbUser = require('../../db_controller/user_db')
+const dbInit = require('../../db_controller/database_header')
 
 var assert = require('assert')
 
@@ -14,6 +15,7 @@ describe('Test project', function () {
     var projectTest
 
     before(async function () {
+        dbInit.databaseTestConnection()
         await dbUser.insertUser(ownerName, email, password).then(async function () {
             await dbProject.insertProject(projectName, ownerName, description).then(async function () {
                 await dbProject.findListProjectsByOwnerName(ownerName).then(function (insertedProject) {

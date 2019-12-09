@@ -2,6 +2,7 @@ const sprintDb = require('../../db_controller/sprint_db')
 const projectDb = require('../../db_controller/project_db')
 const userDb = require('../../db_controller/user_db')
 const issueDb = require('../../db_controller/issue_db')
+const dbInit = require('../../db_controller/database_header')
 
 var assert = require('assert')
 
@@ -16,6 +17,7 @@ describe('Test sprint', function () {
     let sprintTest
 
     before(async function () {
+        dbInit.databaseTestConnection()
         await userDb.insertUser(userName, 'test_mail', 'password_test').then(async function () {
             await projectDb.insertProject('testProject', userName).then(async function () {
                 await projectDb.findListProjectsByOwnerName(userName).then(async function (project) {

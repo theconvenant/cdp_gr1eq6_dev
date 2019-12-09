@@ -5,17 +5,13 @@ node_js:
 dist: xenial
 
 services:
-  - xvfb
+  - mysql
 
 addons:
   chrome: stable
 
 before_install:
-  - docker-compose build
-  - docker-compose up -d
-
-before_script:
-  - travis_wait 1 sleep 20
+  - mysql -u root < database_files/database_create.sql
 
 script:
 - "cd ./code"
