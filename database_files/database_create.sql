@@ -293,6 +293,9 @@ CREATE TABLE IF NOT EXISTS `users` (
 
 --
 -- Contraintes
+-- Contraintes
+ALTER TABLE `projects`
+  ADD CONSTRAINT `primary_project_name` PRIMARY KEY (`_project_name`, `_owner_name`);
 --
 ALTER TABLE `projects`
   ADD CONSTRAINT `projects_ibfk_1` FOREIGN KEY (`_owner_name`) REFERENCES `users` (`username`) ON DELETE CASCADE ON UPDATE CASCADE;
@@ -320,6 +323,9 @@ ALTER TABLE `issues`
 
 ALTER TABLE `sprints`
    ADD CONSTRAINT `sprint_project` FOREIGN KEY (`_project_id`) REFERENCES `projects` (`_project_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+ALTER TABLE `sprints_issues`
+   ADD CONSTRAINT `sprint_issues` FOREIGN KEY (`_issue_id`) REFERENCES `issues` (`_issue_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 ALTER TABLE `releases`
    ADD CONSTRAINT `releases_project` FOREIGN KEY (`_project_id`) REFERENCES `projects` (`_project_id`) ON DELETE CASCADE ON UPDATE CASCADE;
