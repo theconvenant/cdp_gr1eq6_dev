@@ -11,7 +11,8 @@ addons:
   chrome: stable
 
 before_install:
-  - mysql -u root < database_files/database_create.sql
+  - mysql -e 'CREATE DATABASE agourgue;'
+  - use agourgue; mysql -u root < database_files/database_create.sql
 
 script:
 - "cd ./code"
