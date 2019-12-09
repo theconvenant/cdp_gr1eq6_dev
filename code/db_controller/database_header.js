@@ -8,7 +8,7 @@ var database = mysql.createConnection({
     ports:'3306'
 })
 
-exports.databaseTestConnection() = function () {
+exports.databaseTestConnection = function () {
     database = mysql.createConnection({
       host: '127.0.0.1',
       user: 'root',
