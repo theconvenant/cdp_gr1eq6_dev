@@ -13,10 +13,10 @@ node_js:
 
 before_install:
   - docker-compose build
-  - docker-compose up -d
 
 before_script:
-  - travis_wait 1 sleep 60
+  - travis_wait 1 sleep 10
 
 script:
+  - "ls"
   - "npm test"
