@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "test": "mocha test/unit_tests/*"
+    "test": "mocha test/unit_tests/* --exit"
   },
   "author": "GOURGUE Antoine, LAJOINIE Florian, GRIFFAULT Simon",
   "license": "ISC",
