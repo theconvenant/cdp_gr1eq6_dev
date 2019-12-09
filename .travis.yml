@@ -19,4 +19,5 @@ before_script:
 
 script:
 - "cd ./code"
+- "npm install"
 - "npm test"
