@@ -247,6 +247,31 @@ exports.findTaskListOfIssue = function (issueId, projectId) {
 }
 
 /**
+ * @param {number} issuesList
+ * @param {number} projectId
+ */
+exports.findTaskListOfIssueList = function (issuesList, projectId) {
+    return new Promise((resolve, reject) => {
+        if (!issuesList) reject(new Error('issuesList is required'))
+        if (!projectId) reject(new Error('projectId is required'))
+        var findQuery = 'SELECT * FROM tasks WHERE _project_id = ' + projectId + ' AND _task_id IN (' +
+        'SELECT _task_id FROM tasks_issues WHERE _issue_id = ' + issuesList[0]._issue_id
+        for(var i = 1; i < issuesList.length; ++i){
+            findQuery += ' OR ' + issuesList[i]._issue_id
+        }
+        findQuery += ')'
+        database.getDatabase().then(
+            db => db.query(findQuery, function (err, results) {
+                if (err) {
+                    reject(err.sqlMessage)
+                }
+                resolve(JSON.parse(JSON.stringify(results)))
+            })
+        )
+    })
+}
+
+/**
  * @param {number} taskId
  * @param {String} userName
  */

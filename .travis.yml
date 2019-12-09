@@ -5,16 +5,18 @@ addons:
       - google-chrome
     packages:
       - google-chrome-stable
+
 language: node_js
+
 node_js:
-    - 10
+  - 10
 
 before_install:
-    - docker-compose build
-    - docker-compose up -d
+  - docker-compose build
+  - docker-compose up -d
     
-    before_script:
-    - travis_wait 1 sleep 100
+before_script:
+  - travis_wait 1 sleep 100
     
-    script:
-    - "npm test"    
+script:
+  - "npm test"    
