@@ -2,12 +2,31 @@ const database = require('./database_header')
 
 /**
  * @param {number} sprintId
- * @param {number} projectId
  */
 exports.findSprintById = function (sprintId) {
     return new Promise((resolve, reject) => {
         if (!sprintId) reject(new Error('sprintId is required'))
         const sprintQuery = 'SELECT * FROM sprints WHERE _id = ' + sprintId + ';'
+        database.getDatabase().then(
+            db => db.query(sprintQuery, function (err, results) {
+                if (err) {
+                    reject(err.sqlMessage)
+                }
+                resolve(JSON.parse(JSON.stringify(results)))
+            })
+        )
+    })
+}
+
+/**
+ * @param {string} sprintName
+ * @param {number} projectId
+ */
+exports.findSprintbyName = function (sprintName, projectId) {
+    return new Promise((resolve, reject) => {
+        if (!sprintName) reject(new Error('sprintName is required'))
+        if (!projectId) reject(new Error('projectId is required'))
+        const sprintQuery = 'SELECT * FROM sprints WHERE name = \'' + sprintName + '\' AND _project_id = ' + projectId
         database.getDatabase().then(
             db => db.query(sprintQuery, function (err, results) {
                 if (err) {
@@ -89,7 +108,7 @@ exports.insertSprint = function (name, startDate, endDate, projectId, descriptio
         if (!projectId) reject(new Error('projectId is required'))
         if (description) {
             description = '\'' + description + '\''
-        }else{
+        } else {
             description = null
         }
         const insertQuery = 'INSERT INTO sprints (name, starting_date, ending_date, description, _project_id) VALUES ( \'' + name + '\', \'' + startDate + '\', \'' + endDate + '\', ' + description + ', ' + projectId + ');'

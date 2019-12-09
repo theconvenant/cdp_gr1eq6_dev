@@ -57,23 +57,6 @@ exports.getIssueByUsNum = function (usNum, projectId) {
 }
 
 /**
- * @param {number} sprintId
- */
-exports.findIssuesInSprint = function (sprintId) {
-    return new Promise((resolve, reject) => {
-        if (!sprintId) reject(new Error('sprintId is required'))
-        const issueListQuery = 'SELECT * FROM issues WHERE _issue_id IN (SELECT _issue_id FROM sprints_issues WHERE _sprint_id = \'' + sprintId + '\' );'
-        database.getDatabase().then(
-            db => db.query(issueListQuery, function (err, results) {
-                if (err) {
-                    reject(err.sqlMessage)
-                }
-                resolve(JSON.parse(JSON.stringify(results)))
-            })
-        )
-    })
-}
-/**
  * @param {number} releaseId
  */
 exports.findIssuesInRelease = function (releaseId) {
