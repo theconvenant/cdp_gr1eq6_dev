@@ -1,6 +1,7 @@
 const sprintDb = require('../db_controller/sprint_db')
 const issueDb = require('../db_controller/issue_db')
 const taskDb = require('../db_controller/task_db')
+const projectDb = require('../db_controller/project_db')
 
 var projectId
 var projectName
@@ -18,9 +19,27 @@ module.exports = function (app) {
             sprintDb.findSprintsByProjectId(projectId).then (sprintList => {
                 issueDb.findListIssuesByProjectID(projectId).then(issuesList => {
                     if(current_sprint){
-                        sprintDb.findIssueListOfSprint(current_sprint._id, projectId).then( list =>{
-                            res.render('sprints', {moment: moment, idProject: projectId, projectName: projectName, 
-                                sprintList: sprintList, current_sprint: current_sprint, issuesList: issuesList, issuesInSprint: list})
+                        sprintDb.findIssueListOfSprint(current_sprint._id, projectId).then( issueslist =>{
+                            const taskInSprintList = findTaskListOfIssueList(issueslist, projectId)
+                            taskDb.findTasksByProjectId(projectId).then(taskList => {
+                                projectDb.findMembersOfProjectID(projectId).then(memberList => {
+                                    var userNameList = []
+                                    memberList.forEach(member => {
+                                        userNameList.push(member._user_name)
+                                    })
+                                    res.render('sprints', {
+                                        moment: moment,
+                                        idProject: projectId,
+                                        projectName: projectName,
+                                        sprintList: sprintList,
+                                        current_sprint: current_sprint,
+                                        issuesList: issuesList,
+                                        issuesInSprint: issueslist,
+                                        taskList: taskList,
+                                        userNameList: userNameList,
+                                        taskInSprintList:taskInSprintList})
+                                })
+                            })
                         })
                     }else{
                         res.render('sprints', {moment: moment, idProject: projectId, projectName: projectName, 
@@ -59,6 +78,30 @@ module.exports = function (app) {
                 res.redirect('/sprints')
             })         
         })
+
+    function findTaskListOfIssueList(issuesList, projectId){
+        var taskList = new Array()
+        var promiseTab = []
+        if(!issuesList){
+            return taskList
+        }
+        for(var i = 0; i < issuesList; ++i){
+            promiseTab.push(new Promise(
+                (resolve, reject) => { 
+                    taskDb.findTaskListOfIssue(issuesList[i]._issue_id, projectId).then(
+                    taskL => {
+                        if(taskL){
+                            taskList.push(taskL)
+                        }
+                        resolve()
+                    })
+                })
+            )
+        }
+        Promise.all(promiseTab).then(() => {
+            return taskList
+        })
+    }
 
     function insertIssueListOfSprint (sprintId, issueList) {
         if (Array.isArray(issueList)) {
