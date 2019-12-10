@@ -348,6 +348,11 @@ ALTER TABLE `projects_users`
 -- Insertion des valeurs dans la bdd
 --
 
+INSERT INTO `users` (`username`, `email`, `password`) VALUES
+('bob', 'zsdfq', 'bob'),
+('bobby', 'ok@ok.com', 'bob'),
+('jane', 'edgs', 'JJ');
+
 INSERT INTO `projects` (`_project_id`, `_project_name`, `_owner_name`, `description`) VALUES
 (1, 'esdgs', 'jane', '<qsdfq'),
 (2, 'qzs', 'bob', 'aq'),
@@ -397,11 +402,6 @@ INSERT INTO `tasks_users` (`_task_id`, `_user_name`) VALUES
 (12, 'bob'),
 (121, 'bob'),
 (757, 'jane');
-
-INSERT INTO `users` (`username`, `email`, `password`) VALUES
-('bob', 'zsdfq', 'bob'),
-('bobby', 'ok@ok.com', 'bob'),
-('jane', 'edgs', 'JJ');
 
 
 --
