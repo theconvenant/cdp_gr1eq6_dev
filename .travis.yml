@@ -11,8 +11,7 @@ addons:
   chrome: stable
   sonarcloud:
     organization: "theconvenant"
-    token:
-      secure: $SONAR_TOKEN
+    token: $SONAR_TOKEN
 
 before_install:
   - mysql -u root < database_files/database_create.sql
