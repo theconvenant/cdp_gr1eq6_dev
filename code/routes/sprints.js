@@ -20,24 +20,27 @@ module.exports = function (app) {
                 issueDb.findListIssuesByProjectID(projectId).then(issuesList => {
                     if(current_sprint){
                         sprintDb.findIssueListOfSprint(current_sprint._id, projectId).then( issueslist =>{
-                            const taskInSprintList = findTaskListOfIssueList(issueslist, projectId)
-                            taskDb.findTasksByProjectId(projectId).then(taskList => {
-                                projectDb.findMembersOfProjectID(projectId).then(memberList => {
-                                    var userNameList = []
-                                    memberList.forEach(member => {
-                                        userNameList.push(member._user_name)
+                            findTaskListOfIssueList(issueslist, projectId).then(taskInSprintList => {
+                                console.log('after function ****************')
+                                console.log(taskInSprintList)
+                                taskDb.findTasksByProjectId(projectId).then(taskList => {
+                                    projectDb.findMembersOfProjectID(projectId).then(memberList => {
+                                        var userNameList = []
+                                        memberList.forEach(member => {
+                                            userNameList.push(member._user_name)
+                                        })
+                                        res.render('sprints', {
+                                            moment: moment,
+                                            idProject: projectId,
+                                            projectName: projectName,
+                                            sprintList: sprintList,
+                                            current_sprint: current_sprint,
+                                            issuesList: issuesList,
+                                            issuesInSprint: issueslist,
+                                            taskList: taskList,
+                                            userNameList: userNameList,
+                                            taskInSprintList:taskInSprintList})
                                     })
-                                    res.render('sprints', {
-                                        moment: moment,
-                                        idProject: projectId,
-                                        projectName: projectName,
-                                        sprintList: sprintList,
-                                        current_sprint: current_sprint,
-                                        issuesList: issuesList,
-                                        issuesInSprint: issueslist,
-                                        taskList: taskList,
-                                        userNameList: userNameList,
-                                        taskInSprintList:taskInSprintList})
                                 })
                             })
                         })
@@ -80,27 +83,34 @@ module.exports = function (app) {
         })
 
     function findTaskListOfIssueList(issuesList, projectId){
-        var taskList = new Array()
+        return new Promise((resolve, reject) => {
+            var taskList = new Array()
         var promiseTab = []
         if(!issuesList){
             return taskList
         }
-        for(var i = 0; i < issuesList; ++i){
+        for(var i = 0; i < issuesList.length; ++i){
             promiseTab.push(new Promise(
                 (resolve, reject) => { 
                     taskDb.findTaskListOfIssue(issuesList[i]._issue_id, projectId).then(
                     taskL => {
                         if(taskL){
                             taskList.push(taskL)
+
                         }
-                        resolve()
+                        resolve(taskList[0])
                     })
                 })
             )
         }
-        Promise.all(promiseTab).then(() => {
-            return taskList
+        Promise.all(promiseTab).then(list => {
+            console.log('in function ****************')
+            const myList = list[0]
+            console.log(myList)
+            resolve(myList)
+            })
         })
+        
     }
 
     function insertIssueListOfSprint (sprintId, issueList) {

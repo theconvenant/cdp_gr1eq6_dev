@@ -107,32 +107,35 @@
             <div id='TODO' class="w3-margin w3-cell w3-border">
                 <h3 class="w3-border-bottom">TODO</h3>
                 <% for (var i = 0; i < taskInSprintList.length; ++i) { 
-                        if(taskInSprintList[i].state == 'TODO') {
-                %>
-                <div class="w3-margin">
-                    <%taskInSprintList[i]._task_id%>
-                </div>
-                <% }; };%>
+                    if(taskInSprintList[i].state == 'TODO') { %>
+                        <div class="w3-margin w3-center" >
+                            <p> Task id : <%= taskInSprintList[i]._task_id %> </p>
+                            <p> <%= taskInSprintList[i].description %> </p>
+                        </div>
+                    <% }; 
+                };%>
             </div>
             <div id='DOING' class="w3-margin w3-cell w3-border">
                 <h3 class="w3-border-bottom">DOING</h3>
                 <% for (var i = 0; i < taskInSprintList.length; ++i) { 
-                        if(taskInSprintList[i].state == 'DOING') {
-                %>
-                <div class="w3-margin">
-                    <%taskInSprintList[i]._task_id%>
-                </div>
-                <% }; };%>
+                    if(taskInSprintList[i].state == 'DOING') { %>
+                        <div class="w3-margin w3-center" >
+                            <p> Task id : <%= taskInSprintList[i]._task_id %> </p>
+                            <p> <%= taskInSprintList[i].description %> </p>
+                        </div>
+                    <% }; 
+                };%>
             </div>
             <div id='DONE' class="w3-margin w3-cell w3-border">
                 <h3 class="w3-border-bottom">DONE</h3>
                 <% for (var i = 0; i < taskInSprintList.length; ++i) { 
-                        if(taskInSprintList[i].state == 'DONE') {
-                %>
-                <div class="w3-margin">
-                    <%taskInSprintList[i]._task_id%>
-                </div>
-                <% }; };%>
+                    if(taskInSprintList[i].state == 'DONE') { %>
+                        <div class="w3-margin w3-center" >
+                            <p> Task id : <%= taskInSprintList[i]._task_id %> </p>
+                            <p> <%= taskInSprintList[i].description %> </p>
+                        </div>
+                    <% }; 
+                };%>
             </div>
         </div>
         <%};%>
