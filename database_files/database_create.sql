@@ -367,7 +367,7 @@ INSERT INTO `sprints` (`_id`, `name`, `starting_date`, `ending_date`, `descripti
 (1, 'Sprint1', '2220-02-02', '2222-02-20', 'description', 2),
 (2, 'Sprint2', '1010-02-02', '1111-03-02', 'description', 2),
 (3, 'Sprint 1', '2019-12-03', '2019-12-12', 'Sprint 1', 6),
-(6, 'Sprint 2', '2019-12-12', '2019-12-24', NULL, 6),
+(6, 'Sprint 2', '2019-12-12', '2019-12-24', NULL, 6);
 
 INSERT INTO `issues` (`_issue_id`, `description`, `difficulty`, `priority`, `us_num`, `test_state`, `_project_id`) VALUES
 (1, 'gedgs', 9, 'undefined', 'ezsge', 'DONE', 1),
