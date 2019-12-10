@@ -291,6 +291,7 @@ CREATE TABLE IF NOT EXISTS `users` (
 --
 -- Contenu de la table `users`
 --
+
 --
 -- Contraintes pour les tables exportées
 --
@@ -342,3 +343,64 @@ ALTER TABLE `tasks_users`
 
 ALTER TABLE `projects_users`
    ADD CONSTRAINT `add_user_project` FOREIGN KEY (`_user_name`) REFERENCES `users` (`username`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Insertion des valeurs dans la bdd
+--
+
+INSERT INTO `users` (`username`, `email`, `password`) VALUES
+('bob', 'zsdfq', 'bob'),
+('bobby', 'ok@ok.com', 'bob'),
+('jane', 'edgs', 'JJ');
+
+INSERT INTO `projects` (`_project_id`, `_project_name`, `_owner_name`, `description`) VALUES
+(1, 'esdgs', 'jane', '<qsdfq'),
+(2, 'qzs', 'bob', 'aq'),
+(3, 'zaqeda', 'bob', 'aqdz'),
+(6, 'projetTest', 'bob', 'description');
+
+INSERT INTO `projects_users` (`_user_name`, `_project_id`) VALUES
+('bob', 1),
+('jane', 6);
+
+INSERT INTO `sprints` (`_id`, `name`, `starting_date`, `ending_date`, `description`, `_project_id`) VALUES
+(1, 'Sprint1', '2220-02-02', '2222-02-20', 'description', 2),
+(2, 'Sprint2', '1010-02-02', '1111-03-02', 'description', 2),
+(3, 'Sprint 1', '2019-12-03', '2019-12-12', 'Sprint 1', 6),
+(6, 'Sprint 2', '2019-12-12', '2019-12-24', NULL, 6);
+
+INSERT INTO `issues` (`_issue_id`, `description`, `difficulty`, `priority`, `us_num`, `test_state`, `_project_id`) VALUES
+(1, 'gedgs', 9, 'undefined', 'ezsge', 'DONE', 1),
+(6, 'En tant que chargé de projet je souhaite accéder à mes contacts', 2, 'Medium', 'US1', 'TODO', 6),
+(8, 'En tant que participant au projet je souhaite accéder aux issues', 1, 'Low', 'US2', 'TODO', 6),
+(16, 'En tant que participant au projet je souhaite accéder aux tasks', 3, 'Medium', 'US3', 'DONE', 6);
+
+INSERT INTO `sprints_issues` (`_issue_id`, `_sprint_id`) VALUES
+(6, 3),
+(6, 6),
+(8, 3),
+(16, 6);
+
+INSERT INTO `tasks` (`_task_id`, `description`, `state`, `_project_id`) VALUES
+(8, 'qezs', 'DOING', 1),
+(12, 'Ecrire dans le fichier \"contacts.js\" la fonction d écriture dans la base de données', 'DONE', 6),
+(121, 'Ecrire dans le fichier \"issues.js\" la fonction d écriture dans la base de données', 'TODO', 6),
+(757, 'fdgrs', 'TODO', 1);
+
+INSERT INTO `tasks_issues` (`_task_id`, `_issue_id`) VALUES
+(121, 6),
+(121, 16);
+
+INSERT INTO `tasks_tasks` (`_task_id`, `_dependency_task_id`) VALUES
+(8, 757);
+
+INSERT INTO `tasks_users` (`_task_id`, `_user_name`) VALUES
+(8, 'jane'),
+(12, 'bob'),
+(121, 'bob'),
+(757, 'jane');
+
+
+--
+-- Insertion des valeurs
+--
