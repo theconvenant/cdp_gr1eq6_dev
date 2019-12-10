@@ -30,7 +30,8 @@
             <li class="w3-bar">
 
             <form action="/removeUserFromProject" method = "post">
-                <button type="submit" value='<%=memberList[i]._user_name %>'
+                <button type="submit" value='<%=memberList[i]._user_name %>' 
+                    onclick="return confirm('Are you sure you want to remove this member from the project ? This action is definitive')"
                     name="memberName" class="w3-bar-item w3-button w3-white w3-xlarge w3-right">Remove</button>    
             </form>
 
