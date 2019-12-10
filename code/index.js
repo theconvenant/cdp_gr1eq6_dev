@@ -2,9 +2,7 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const path = require('path')
 const app = express()
-// const databaseSelect = require('./db_controller/database_select')
-// const databaseInsert = require('./db_controller/database_insert')
-// const databaseDelete = require('./db_controller/database_delete')
+const port = 8080
 const projectDb = require('./db_controller/project_db')
 const userDb = require('./db_controller/user_db')
 
@@ -80,6 +78,6 @@ function redirectUnmatched (req, res) {
 
 app.use(redirectUnmatched)
 
-app.listen(8080, function () {
+app.listen(port, function () {
     console.log('server listening at port 8080')
 })
