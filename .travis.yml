@@ -2,13 +2,17 @@ language: node_js
 node_js:
   - 10
 
-dist: xenial
+dist: trusty
 
 services:
   - mysql
 
 addons:
   chrome: stable
+  sonarcloud:
+    organization: "theconvenant"
+    token:
+      secure: travis encrypt de7d0817ff22a8436b350cfb636de4b566dbd678
 
 before_install:
   - mysql -u root < database_files/database_create.sql
@@ -17,3 +21,4 @@ script:
 - "cd ./code"
 - "npm install"
 - "npm test"
+- sonar-scanner
